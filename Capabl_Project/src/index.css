@@ -1,0 +1,353 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ============================
+   CSS VARIABLES - THEME TOKENS
+   ============================ */
+:root {
+  /* Backgrounds */
+  --bg: #f7fafc;
+  --card-bg: #ffffff;
+  --surface: #ffffff;
+
+  /* Text Colors */
+  --text-primary: #0f172a;
+  --text-secondary: #475569;
+  --muted: #64748b;
+
+  /* Accent Colors */
+  --accent: #0F766E;
+  --accent-light: #14B8A6;
+  --accent-dark: #0D5F58;
+  --accent-contrast: #ffffff;
+
+  /* Secondary Accent */
+  --secondary: #FB7185;
+  --secondary-light: #FDA4AF;
+  --secondary-dark: #E11D48;
+
+  /* Borders & Shadows */
+  --border: rgba(2, 6, 23, 0.08);
+  --border-strong: rgba(2, 6, 23, 0.15);
+  --shadow: 0 4px 12px rgba(2, 6, 23, 0.06);
+  --shadow-lg: 0 8px 24px rgba(2, 6, 23, 0.1);
+
+  /* Focus */
+  --focus: 0 0 0 3px rgba(15, 118, 110, 0.25);
+  --focus-ring: rgba(15, 118, 110, 0.25);
+
+  /* Status Colors */
+  --success: #10b981;
+  --success-bg: #ecfdf5;
+  --error: #ef4444;
+  --error-bg: #fef2f2;
+  --warning: #f59e0b;
+  --warning-bg: #fffbeb;
+
+  /* Input/Form */
+  --input-bg: #f8fafc;
+  --input-border: #e2e8f0;
+
+  /* Scrollbar */
+  --scrollbar-track: transparent;
+  --scrollbar-thumb: #cbd5e1;
+  --scrollbar-thumb-hover: #94a3b8;
+}
+
+/* Dark Theme Variables */
+[data-theme="dark"] {
+  /* Backgrounds */
+  --bg: #071023;
+  --bg-elev-1: #0b1622;
+  --bg-elev-2: #0e1926;
+  --card-bg: #0f172a;
+  --surface: #0d1620;
+
+  /* Text Colors */
+  --text-primary: #e6eef8;
+  --text-secondary: #98a8bf;
+  --muted: #8799ac;
+
+  /* Accent Colors - muted/desaturated */
+  --accent: #2f7b78;
+  --accent-soft: hsl(180 22% 42% / 0.95);
+  --accent-light: #3d9994;
+  --accent-dark: #256663;
+  --accent-contrast: #e6eef8;
+
+  /* Secondary Accent */
+  --secondary: #c9616f;
+  --secondary-light: #d4848f;
+  --secondary-dark: #a84d5a;
+
+  /* Borders & Shadows */
+  --border: rgba(255, 255, 255, 0.04);
+  --border-strong: rgba(255, 255, 255, 0.08);
+  --shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.4);
+
+  /* Focus */
+  --focus: 0 0 0 3px rgba(47, 123, 120, 0.25);
+  --focus-ring: rgba(47, 123, 120, 0.25);
+
+  /* Status Colors - muted */
+  --success: #2f8f6e;
+  --success-bg: rgba(47, 143, 110, 0.15);
+  --error: #9f4b4b;
+  --error-bg: rgba(159, 75, 75, 0.15);
+  --warning: #b07a2a;
+  --warning-bg: rgba(176, 122, 42, 0.15);
+
+  /* Input/Form */
+  --input-bg: #1e293b;
+  --input-border: #334155;
+
+  /* Scrollbar */
+  --scrollbar-track: transparent;
+  --scrollbar-thumb: #475569;
+  --scrollbar-thumb-hover: #64748b;
+
+  /* UI Micro-tokens for tabs/buttons */
+  --tab-bg: rgba(255, 255, 255, 0.02);
+  --tab-hover-bg: rgba(255, 255, 255, 0.04);
+  --tab-active-bg: var(--accent-soft);
+  --tab-border: rgba(255, 255, 255, 0.03);
+
+  /* Soft shadows for emergency/call buttons */
+  --emergency-shadow: 0 8px 20px rgba(159, 75, 75, 0.12);
+  --call-shadow: 0 6px 18px rgba(47, 122, 114, 0.12);
+}
+
+/* ============================
+   BASE STYLES WITH VARIABLES
+   ============================ */
+@layer base {
+  html {
+    transition: background-color 0.25s ease, color 0.25s ease;
+  }
+
+  body {
+    background-color: var(--bg);
+    color: var(--text-primary);
+    font-family: 'Inter', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    transition: background-color 0.25s ease, color 0.25s ease;
+  }
+}
+
+/* ============================
+   COMPONENT OVERRIDES FOR DARK MODE
+   ============================ */
+@layer components {
+
+  /* Cards */
+  .card,
+  [class*="bg-white"],
+  [class*="bg-surface"] {
+    transition: background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  [data-theme="dark"] .card {
+    background-color: var(--card-bg);
+    border-color: var(--border);
+    box-shadow: var(--shadow);
+  }
+
+  /* Inputs and Forms */
+  input,
+  select,
+  textarea {
+    transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+  }
+
+  [data-theme="dark"] input,
+  [data-theme="dark"] select,
+  [data-theme="dark"] textarea {
+    background-color: var(--input-bg);
+    border-color: var(--input-border);
+    color: var(--text-primary);
+  }
+
+  [data-theme="dark"] input::placeholder,
+  [data-theme="dark"] textarea::placeholder {
+    color: var(--muted);
+  }
+
+  [data-theme="dark"] input:focus,
+  [data-theme="dark"] select:focus,
+  [data-theme="dark"] textarea:focus {
+    border-color: var(--accent);
+    box-shadow: var(--focus);
+  }
+
+  /* Buttons */
+  [data-theme="dark"] button {
+    transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease, box-shadow 0.15s ease;
+  }
+
+  /* Focus states */
+  [data-theme="dark"] *:focus-visible {
+    outline: none;
+    box-shadow: var(--focus);
+  }
+
+  /* Tables */
+  [data-theme="dark"] table th,
+  [data-theme="dark"] table td {
+    border-color: var(--border);
+  }
+
+  [data-theme="dark"] table th {
+    background-color: var(--surface);
+    color: var(--text-primary);
+  }
+
+  [data-theme="dark"] table td {
+    background-color: var(--card-bg);
+    color: var(--text-secondary);
+  }
+}
+
+/* ============================
+   CUSTOM SCROLLBAR
+   ============================ */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--scrollbar-track);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--scrollbar-thumb);
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--scrollbar-thumb-hover);
+}
+
+/* Firefox scrollbar */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
+}
+
+/* ============================
+   GLOBAL DARK MODE UTILITIES
+   ============================ */
+[data-theme="dark"] {
+  color-scheme: dark;
+}
+
+/* Ensure smooth transitions on theme change */
+*,
+*::before,
+*::after {
+  transition-property: background-color, border-color, color, fill, stroke, box-shadow;
+  transition-duration: 0s;
+}
+
+html.transitioning *,
+html.transitioning *::before,
+html.transitioning *::after {
+  transition-duration: 0.2s !important;
+  transition-timing-function: ease !important;
+}
+
+/* ============================
+   ECG PULSE ANIMATION
+   ============================ */
+@keyframes ecg-travel {
+  0% {
+    background-position: 100% 0;
+  }
+
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+.header-line-pulse {
+  position: relative;
+  border-bottom: none !important;
+  overflow: hidden;
+  /* Ensure pulse doesn't spill */
+}
+
+.header-line-pulse::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  /* Slightly thicker for visibility */
+
+  /* The Gradient: Glowing Dot
+     A narrow, bright concentration of light traveling across */
+  background: linear-gradient(90deg,
+      transparent 0%,
+      rgba(15, 118, 110, 0) 45%,
+      rgba(15, 118, 110, 0.5) 49%,
+      rgba(15, 118, 110, 1) 50%,
+      rgba(15, 118, 110, 0.5) 51%,
+      rgba(15, 118, 110, 0) 55%,
+      transparent 100%);
+
+  background-size: 200% 100%;
+  animation: ecg-travel 10s linear infinite;
+}
+
+[data-theme="dark"] .header-line-pulse::after {
+  background: linear-gradient(90deg,
+      transparent 0%,
+      rgba(47, 123, 120, 0) 45%,
+      rgba(47, 123, 120, 0.5) 49%,
+      rgba(47, 123, 120, 1) 50%,
+      rgba(47, 123, 120, 0.5) 51%,
+      rgba(47, 123, 120, 0) 55%,
+      transparent 100%);
+  background-size: 200% 100%;
+}
+
+/* Glow Animation */
+@keyframes breathe {
+  0% {
+    box-shadow: 0 0 0 0 rgba(0, 0, 0, 0);
+  }
+
+  50% {
+    box-shadow: 0 0 20px 5px var(--glow-color);
+  }
+
+  100% {
+    box-shadow: 0 0 0 0 rgba(0, 0, 0, 0);
+  }
+}
+
+.glow-teal {
+  --glow-color: rgba(20, 184, 166, 0.5);
+  animation: breathe 1.5s ease-in-out forwards;
+}
+
+.glow-indigo {
+  --glow-color: rgba(99, 102, 241, 0.5);
+  animation: breathe 1.5s ease-in-out forwards;
+}
+
+.glow-blue {
+  --glow-color: rgba(59, 130, 246, 0.5);
+  animation: breathe 1.5s ease-in-out forwards;
+}
+
+.glow-red {
+  --glow-color: rgba(239, 68, 68, 0.5);
+  animation: breathe 1.5s ease-in-out forwards;
+}

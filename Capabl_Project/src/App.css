@@ -1,0 +1,103 @@
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+}
+
+.logo {
+  height: 6em;
+  padding: 1.5em;
+  will-change: filter;
+  transition: filter 300ms;
+}
+
+.logo:hover {
+  filter: drop-shadow(0 0 2em #646cffaa);
+}
+
+.logo.react:hover {
+  filter: drop-shadow(0 0 2em #61dafbaa);
+}
+
+@keyframes logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  a:nth-of-type(2) .logo {
+    animation: logo-spin infinite 20s linear;
+  }
+}
+
+.card {
+  padding: 2em;
+}
+
+.read-the-docs {
+  color: var(--muted, #888);
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+th,
+td {
+  border: 1px solid var(--border, #d1d5db);
+  padding: 6px 10px;
+  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+
+th {
+  background-color: var(--surface, #f9fafb);
+  color: var(--text-primary, #1e293b);
+  font-weight: 600;
+}
+
+td {
+  background-color: var(--card-bg, #ffffff);
+  color: var(--text-secondary, #475569);
+}
+
+/* Glow Animation */
+@keyframes breathe {
+  0% {
+    box-shadow: 0 0 0 0 rgba(0, 0, 0, 0);
+  }
+
+  50% {
+    box-shadow: 0 0 20px 5px var(--glow-color);
+  }
+
+  100% {
+    box-shadow: 0 0 0 0 rgba(0, 0, 0, 0);
+  }
+}
+
+.glow-teal {
+  --glow-color: rgba(20, 184, 166, 0.5);
+  animation: breathe 1.5s ease-in-out forwards;
+}
+
+.glow-indigo {
+  --glow-color: rgba(99, 102, 241, 0.5);
+  animation: breathe 1.5s ease-in-out forwards;
+}
+
+.glow-blue {
+  --glow-color: rgba(59, 130, 246, 0.5);
+  animation: breathe 1.5s ease-in-out forwards;
+}
+
+.glow-red {
+  --glow-color: rgba(239, 68, 68, 0.5);
+  animation: breathe 1.5s ease-in-out forwards;
+}
