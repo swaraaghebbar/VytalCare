@@ -1,0 +1,21 @@
+export default function Terms() {
+  return (
+    <div style={{ maxWidth: "800px", margin: "40px auto", padding: "20px" }}>
+      <h1>Terms of Service</h1>
+
+      <p>
+        VytalCare is provided for educational and informational purposes.
+      </p>
+
+      <p>
+        The application does not replace professional medical advice,
+        diagnosis, or treatment.
+      </p>
+
+      <p>
+        Users are responsible for consulting qualified healthcare professionals
+        before making medical decisions.
+      </p>
+    </div>
+  );
+}

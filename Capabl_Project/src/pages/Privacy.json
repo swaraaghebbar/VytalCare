@@ -1,0 +1,27 @@
+export default function Privacy() {
+  return (
+    <div style={{ maxWidth: "800px", margin: "40px auto", padding: "20px" }}>
+      <h1>Privacy Policy</h1>
+
+      <p>
+        VytalCare uses Google Authentication only to verify user identity and
+        provide personalized health features.
+      </p>
+
+      <p>
+        We do not sell, rent, or share your personal information with third
+        parties.
+      </p>
+
+      <p>
+        Any health information stored is used solely to provide the application's
+        features.
+      </p>
+
+      <p>
+        If you have questions regarding this Privacy Policy, contact the
+        VytalCare team.
+      </p>
+    </div>
+  );
+}
