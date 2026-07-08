@@ -875,9 +875,58 @@ const METRIC_INFO = {
     desc: "Measured in Beats Per Minute (BPM). A lower resting heart rate (typically 60-100 BPM) generally indicates better cardiovascular fitness and efficient heart function."
   },
   about: {
-    title: "About VytalCare",
-    desc: "VytalCare is your Agentic, AI-powered health companion designed to move beyond simple tracking. Functioning as an intelligent agent, it proactively manages your wellness by autonomously syncing smart medication reminders to your calendar, triggering automated health workflows, and converting prescription images into actionable schedules. VytalCare was developed with passion and precision by Team Stranger Strings: Aditya Prakash, Ananya Raghuveer, Swaraag Hebbar N., and Shashank Ravindra."
-  }
+  title: "About VytalCare",
+  desc: (
+    <>
+      <p>
+        VytalCare is your Agentic, AI-powered health companion designed to move
+        beyond simple tracking. Functioning as an intelligent agent, it
+        proactively manages your wellness by autonomously syncing smart
+        medication reminders to your calendar, triggering automated health
+        workflows, and converting prescription images into actionable schedules.
+         VytalCare was developed with passion and precision.
+         
+<p><strong>From: Swaraag Hebbar N, Shashank Ravindra & Ananya Raghuveer</strong></p>
+         
+      </p>
+      <div
+  style={{
+    textAlign: "center",
+    marginTop: "16px",
+    fontWeight: 500,
+  }}
+>
+  <a
+    href="/privacy.html"
+    target="_blank"
+    rel="noopener noreferrer"
+    style={{
+      color: "#4FD1C5",
+      textDecoration: "underline",
+      marginRight: "12px",
+    }}
+  >
+    Privacy Policy
+  </a>
+
+  <span style={{ color: "#94A3B8" }}>|</span>
+
+  <a
+    href="/terms.html"
+    target="_blank"
+    rel="noopener noreferrer"
+    style={{
+      color: "#4FD1C5",
+      textDecoration: "underline",
+      marginLeft: "12px",
+    }}
+  >
+    Terms of Service
+  </a>
+</div>
+    </>
+  )
+}
 };
 
 const parseAssistantResponse = (text = "") => {
