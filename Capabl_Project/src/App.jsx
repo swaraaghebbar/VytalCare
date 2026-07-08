@@ -4121,7 +4121,7 @@ Rules:
             size={28}
             className="mr-3 text-primary cursor-pointer hover:opacity-80"
             onClick={() =>
-              window.open("https://www.youtube.com/watch?v=v0NDDoNRtQ8", "_blank")
+              window.open("https://www.youtube.com/shorts/IQcq9lFWO6s", "_blank")
             }
           />
           Activity Dashboard
