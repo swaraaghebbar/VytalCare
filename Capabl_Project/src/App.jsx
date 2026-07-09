@@ -761,7 +761,10 @@ const InputField = ({ label, name, type = "text", placeholder, isEditing, profil
 /** ---------------------------------------
  * Auth Login Card (unchanged)
  * -------------------------------------- */
-const LoginPage = ({ handleLogin, error }) => (
+const LoginPage = ({ handleLogin, error }) => {
+  const [showAbout, setShowAbout] = useState(false);
+
+  return (
   <div className="flex flex-col items-center justify-center min-h-screen p-6 bg-background dark:bg-slate-950">
     <div className="max-w-md w-full p-8 rounded-3xl shadow-xl bg-surface dark:bg-slate-900 text-center border border-slate-100 dark:border-slate-800 animate-fade-in">
       <div className="w-20 h-20 bg-white dark:bg-slate-800 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg shadow-slate-200/50 dark:shadow-none border border-slate-100 dark:border-slate-700">
@@ -793,13 +796,100 @@ const LoginPage = ({ handleLogin, error }) => (
         />
         Sign In with Google
       </button>
+      <div className="mt-6 flex flex-col items-center gap-4">
 
-      <p className="mt-6 text-xs text-text-muted">
-        By connecting, you authorize access to your Google Fit activity, sleep, and heart-rate data.
-      </p>
-    </div>
+  <button
+    onClick={() => setShowAbout(true)}
+    className="flex items-center gap-2 text-primary hover:underline"
+  >
+    <Info size={18} />
+    About VytalCare
+  </button>
+
+  <div className="text-xs text-slate-500">
+    <a
+      href="/privacy.html"
+      target="_blank"
+      rel="noopener noreferrer"
+      className="hover:text-primary hover:underline"
+    >
+      Privacy Policy
+    </a>
+
+    <span className="mx-2">|</span>
+
+    <a
+      href="/terms.html"
+      target="_blank"
+      rel="noopener noreferrer"
+      className="hover:text-primary hover:underline"
+    >
+      Terms of Service
+    </a>
   </div>
-);
+
+</div>
+         <div className="mt-6 flex flex-col items-center gap-4">
+
+      {showAbout && (
+        <div
+          className="fixed inset-0 bg-black/60 flex items-center justify-center z-50"
+          onClick={() => setShowAbout(false)}
+        >
+          <div
+            className="bg-white dark:bg-slate-800 rounded-3xl p-6 max-w-md w-full mx-4 relative"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button
+              onClick={() => setShowAbout(false)}
+              className="absolute top-4 right-4"
+            >
+              <X size={20} />
+            </button>
+
+            <div className="flex items-center gap-3 mb-4">
+              <Info className="text-primary" size={24} />
+              <h2 className="text-xl font-bold">About VytalCare</h2>
+            </div>
+
+            <div className="text-sm leading-7 text-slate-600 dark:text-slate-300">
+
+              <p>
+                VytalCare is your Agentic, AI-powered health companion designed
+                to move beyond simple tracking. It proactively manages your
+                wellness through intelligent medication reminders, prescription
+                analysis, and automated health workflows.
+              </p>
+
+              <br />
+
+              <p className="text-center font-semibold text-lg">
+                Team Stranger Strings
+              </p>
+
+              <p className="text-center mt-2 leading-7">
+                Swaraag Hebbar N<br />
+                Shashank Ravindra <br />
+                Ananya Raghuveer<br />
+                
+              </p>
+
+            </div>
+
+            <button
+              onClick={() => setShowAbout(false)}
+              className="mt-6 w-full py-3 bg-primary text-white rounded-xl"
+            >
+              Got it
+            </button>
+          </div>
+        </div>
+      )}
+      </div>
+    </div>
+    </div>
+  );
+};
 
 /** ---------------------------------------
  * Networking helper (unchanged)
@@ -874,7 +964,7 @@ const METRIC_INFO = {
     title: "Heart Rate",
     desc: "Measured in Beats Per Minute (BPM). A lower resting heart rate (typically 60-100 BPM) generally indicates better cardiovascular fitness and efficient heart function."
   },
-  about: {
+about: {
   title: "About VytalCare",
   desc: (
     <>
@@ -884,46 +974,25 @@ const METRIC_INFO = {
         proactively manages your wellness by autonomously syncing smart
         medication reminders to your calendar, triggering automated health
         workflows, and converting prescription images into actionable schedules.
-         VytalCare was developed with passion and precision.
-         
-<p><strong>From: Swaraag Hebbar N, Shashank Ravindra & Ananya Raghuveer</strong></p>
-         
       </p>
-      <div
-  style={{
-    textAlign: "center",
-    marginTop: "16px",
-    fontWeight: 500,
-  }}
->
-  <a
-    href="/privacy.html"
-    target="_blank"
-    rel="noopener noreferrer"
-    style={{
-      color: "#4FD1C5",
-      textDecoration: "underline",
-      marginRight: "12px",
-    }}
-  >
-    Privacy Policy
-  </a>
 
-  <span style={{ color: "#94A3B8" }}>|</span>
+      <br />
 
-  <a
-    href="/terms.html"
-    target="_blank"
-    rel="noopener noreferrer"
-    style={{
-      color: "#4FD1C5",
-      textDecoration: "underline",
-      marginLeft: "12px",
-    }}
-  >
-    Terms of Service
-  </a>
-</div>
+      <p>
+        VytalCare was developed with passion and precision.
+      </p>
+
+      <br />
+
+      <p style={{ textAlign: "center", fontWeight: "600" }}>
+        Team Stranger Strings:
+        <br />
+        Swaraag Hebbar N
+        <br />
+        Shashank Ravindra
+        <br />
+        Ananya Raghuveer
+      </p>
     </>
   )
 }
@@ -5854,9 +5923,9 @@ Rules:
             </div>
             <h3 className="text-xl font-bold text-text-main dark:text-white">{info.title}</h3>
           </div>
-          <p className="text-text-muted dark:text-slate-300 leading-relaxed text-sm">
-            {info.desc}
-          </p>
+        <div className="text-text-muted dark:text-slate-300 leading-relaxed text-sm">
+  {info.desc}
+</div>
           <button
             onClick={() => setActiveInfoMetric(null)}
             className="mt-6 w-full py-3 bg-primary text-white rounded-xl font-semibold shadow-lg shadow-primary/20 hover:bg-primary-dark transition-all"
@@ -5874,7 +5943,11 @@ Rules:
   /** ---------------------------------------
    * Render (unchanged)
    * -------------------------------------- */
-  if (!googleAccessToken) return <LoginPage handleLogin={handleLogin} error={error} />;
+  if (!googleAccessToken) return <LoginPage
+    handleLogin={handleLogin}
+    error={error}
+    setActiveInfoMetric={setActiveInfoMetric}
+/>;
 
   return (
     <div className="min-h-screen p-4 sm:p-8 bg-background dark:bg-slate-950 text-text-main dark:text-slate-100 font-sans">
