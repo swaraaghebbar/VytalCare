@@ -765,7 +765,8 @@ const LoginPage = ({ handleLogin, error }) => {
   const [showAbout, setShowAbout] = useState(false);
 
   return (
-  <div className="flex flex-col items-center justify-center min-h-screen p-6 bg-background dark:bg-slate-950">
+  <div className="min-h-screen bg-background dark:bg-slate-950">
+    <div className="flex justify-center pt-20 pb-12 px-6">
     <div className="max-w-md w-full p-8 rounded-3xl shadow-xl bg-surface dark:bg-slate-900 text-center border border-slate-100 dark:border-slate-800 animate-fade-in">
       <div className="w-20 h-20 bg-white dark:bg-slate-800 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg shadow-slate-200/50 dark:shadow-none border border-slate-100 dark:border-slate-700">
         <img
@@ -796,117 +797,151 @@ const LoginPage = ({ handleLogin, error }) => {
         />
         Sign In with Google
       </button>
-      <div className="mt-6 flex flex-col items-center gap-4">
+      
+         <div className="mt-6 flex flex-col items-center gap-4">
+      </div>
+        </div>
 
-  <button
-    onClick={() => setShowAbout(true)}
-    className="flex items-center gap-2 text-primary hover:underline"
-  >
-    <Info size={18} />
-    About VytalCare
-  </button>
+    <div className="flex justify-center py-10">
+      <div className="w-24 h-1 rounded-full bg-primary/40"></div>
+    </div>
 
-  <div className="text-xs text-slate-500">
+    <div className="max-w-3xl mx-auto px-6 pb-20">
+
+  <div className="bg-surface dark:bg-slate-900 rounded-3xl shadow-xl border border-slate-100 dark:border-slate-800 p-8">
+
+    <h2 className="text-3xl font-bold text-center text-text-main dark:text-white mb-6">
+      About VytalCare
+    </h2>
+
+    <p className="text-text-muted dark:text-slate-300 leading-8 text-justify">
+  <strong>VytalCare</strong> is an AI-powered personal healthcare companion
+  designed to help users manage their daily wellness through intelligent
+  health monitoring, medication management, and personalized health insights.
+  The application combines artificial intelligence with health data
+  integration to provide a proactive, secure, and user-friendly healthcare
+  experience.
+</p>
+
+<p className="mt-6 text-text-muted dark:text-slate-300 leading-8 text-justify">
+  Users can securely sign in with their Google account to access features
+  including medication reminders, prescription scanning, health metric
+  tracking, emergency contact management, and an AI health assistant.
+  VytalCare integrates with Google Fit to retrieve fitness and wellness
+  information such as step count, sleep duration, heart rate, calories
+  burned, and distance travelled, allowing users to view their health
+  information in one unified dashboard.
+</p>
+
+<p className="mt-6 text-text-muted dark:text-slate-300 leading-8 text-justify">
+  The application requests access only to the Google user data necessary for
+  its core functionality. Google account information is used solely for secure
+  authentication and user identification. Google Fit data is used to display
+  health metrics, calculate wellness scores, generate personalized insights,
+  and help users monitor their overall health. Google Calendar integration is
+  used to automatically create and synchronize medication reminders, ensuring
+  users receive timely notifications. VytalCare does not sell or share user
+  data with third parties for advertising purposes and only uses the requested
+  information to provide its healthcare services.
+</p>
+
+<p className="mt-6 text-text-muted dark:text-slate-300 leading-8 text-justify">
+  Developed by <strong>Team Stranger Strings</strong>, VytalCare aims to make
+  preventive healthcare more accessible by combining intelligent automation,
+  AI-powered assistance, and secure cloud technologies into a single,
+  user-centric platform.
+</p>
+
+<div className="grid grid-cols-1 md:grid-cols-2 gap-5 mt-10">
+
+  <div className="rounded-2xl border border-slate-200 dark:border-slate-700 p-5">
+    <h4 className="text-lg font-semibold text-primary mb-2">
+      💊 Smart Medication Management
+    </h4>
+    <p className="text-sm text-text-muted dark:text-slate-300 leading-7">
+      Create medication reminders manually or automatically from prescription
+      images. Sync reminders directly with Google Calendar so you never miss a dose.
+    </p>
+  </div>
+
+  <div className="rounded-2xl border border-slate-200 dark:border-slate-700 p-5">
+    <h4 className="text-lg font-semibold text-primary mb-2">
+      📊 Health Monitoring
+    </h4>
+    <p className="text-sm text-text-muted dark:text-slate-300 leading-7">
+      Track steps, sleep, calories, heart rate, hydration, BMI, and distance
+      using Google Fit integration and interactive visualizations.
+    </p>
+  </div>
+
+  <div className="rounded-2xl border border-slate-200 dark:border-slate-700 p-5">
+    <h4 className="text-lg font-semibold text-primary mb-2">
+      🤖 AI Health Assistant
+    </h4>
+    <p className="text-sm text-text-muted dark:text-slate-300 leading-7">
+      Ask health-related questions through an AI assistant powered by trusted
+      medical sources to receive reliable educational information.
+    </p>
+  </div>
+
+  <div className="rounded-2xl border border-slate-200 dark:border-slate-700 p-5">
+    <h4 className="text-lg font-semibold text-primary mb-2">
+      🚑 Emergency Support
+    </h4>
+    <p className="text-sm text-text-muted dark:text-slate-300 leading-7">
+      Store caregiver and emergency contact information for quick access during
+      urgent situations.
+    </p>
+  </div>
+
+</div>
+
+    <div className="mt-8 text-center">
+      <h3 className="text-xl font-semibold text-text-main dark:text-white">
+        Team Stranger Strings
+      </h3>
+
+      <p className="mt-3 text-text-muted dark:text-slate-300 leading-8">
+        Aditya Prakash<br />
+        Ananya Raghuveer<br />
+        Swaraag Hebbar N<br />
+        Shashank Ravindra
+      </p>
+    </div>
+<div className="mt-12 pt-8 border-t border-slate-200 dark:border-slate-700">
+
+  <div className="text-center text-sm text-text-muted dark:text-slate-400">
+    © 2026 VytalCare • Built by <strong>Team Stranger Strings</strong>
+  </div>
+
+  <div className="flex justify-center items-center gap-6 mt-4 text-sm">
+
     <a
       href="/privacy.html"
       target="_blank"
       rel="noopener noreferrer"
-      className="hover:text-primary hover:underline"
+      className="text-primary hover:underline"
     >
       Privacy Policy
     </a>
-
-    <span className="mx-2">|</span>
 
     <a
       href="/terms.html"
       target="_blank"
       rel="noopener noreferrer"
-      className="hover:text-primary hover:underline"
+      className="text-primary hover:underline"
     >
       Terms of Service
     </a>
+
   </div>
 
 </div>
-         <div className="mt-6 flex flex-col items-center gap-4">
-
-      {showAbout && (
-        <div
-          className="fixed inset-0 bg-black/60 flex items-center justify-center z-50"
-          onClick={() => setShowAbout(false)}
-        >
-          <div
-            className="bg-white dark:bg-slate-800 rounded-3xl p-6 max-w-md w-full mx-4 relative"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <button
-              onClick={() => setShowAbout(false)}
-              className="absolute top-4 right-4"
-            >
-              <X size={20} />
-            </button>
-
-            <div className="flex items-center gap-3 mb-4">
-              <Info className="text-primary" size={24} />
-              <h2 className="text-xl font-bold">About VytalCare</h2>
-            </div>
-
-            <div className="text-sm leading-7 text-slate-600 dark:text-slate-300">
-
-              <p>
-               VytalCare is an AI-powered personal healthcare companion designed to help users manage their daily wellness through intelligent health monitoring, medication management, and personalized health insights. The application combines artificial intelligence with health data integration to provide a proactive and user-friendly healthcare experience.
-Users can securely sign in with their Google account to access features including medication reminders, prescription scanning, health metric tracking, emergency contact management, and an AI health assistant. VytalCare integrates with Google Fit to retrieve fitness and wellness information such as step count, sleep duration, heart rate, calories burned, and distance travelled, allowing users to view their health information in a unified dashboard.
-The application requests access only to the Google user data necessary for its core functionality:
-
-Google Account information is used solely for secure authentication and user identification.
-Google Fit data (steps, sleep, heart rate, calories, and distance) is used to display health metrics, calculate wellness scores, generate personalized insights, and help users monitor their overall health.
-Google Calendar access is used to automatically create and synchronize medication reminders and healthcare appointments, ensuring users receive timely notifications.
-No Google user data is sold, shared with third parties for advertising, or used for purposes unrelated to the application's healthcare functionality.
-
-VytalCare is hosted on our verified domain:
-
-Homepage: https://vytalcare-gray.vercel.app/
-
-The application's Privacy Policy is publicly accessible without requiring users to sign in:
-
-Privacy Policy: https://vytalcare-gray.vercel.app/privacy.html
-
-The Terms of Service are also publicly available:
-
-Terms of Service: https://vytalcare-gray.vercel.app/terms.html
-
-These pages clearly describe how user information is collected, used, stored, and protected. Users can access both documents directly from the application's login page before signing in.
-
-VytalCare has been developed with the objective of making healthcare management more accessible, proactive, and reliable through the responsible use of artificial intelligence and secure Google services.
-              </p>
-
-              <br />
-
-              <p className="text-center font-semibold text-lg">
-                From
-              </p>
-
-              <p className="text-center mt-2 leading-7">
-                Swaraag Hebbar N<br />
-                Shashank Ravindra <br />
-                Ananya Raghuveer<br />
-                
-              </p>
-
-            </div>
-
-            <button
-              onClick={() => setShowAbout(false)}
-              className="mt-6 w-full py-3 bg-primary text-white rounded-xl"
-            >
-              Got it
-            </button>
-          </div>
-        </div>
-      )}
-      </div>
     </div>
+
+  </div>
+
+</div>
     </div>
   );
 };
