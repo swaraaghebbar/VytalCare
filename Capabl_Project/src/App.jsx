@@ -855,16 +855,36 @@ const LoginPage = ({ handleLogin, error }) => {
             <div className="text-sm leading-7 text-slate-600 dark:text-slate-300">
 
               <p>
-                VytalCare is your Agentic, AI-powered health companion designed
-                to move beyond simple tracking. It proactively manages your
-                wellness through intelligent medication reminders, prescription
-                analysis, and automated health workflows.
+               VytalCare is an AI-powered personal healthcare companion designed to help users manage their daily wellness through intelligent health monitoring, medication management, and personalized health insights. The application combines artificial intelligence with health data integration to provide a proactive and user-friendly healthcare experience.
+Users can securely sign in with their Google account to access features including medication reminders, prescription scanning, health metric tracking, emergency contact management, and an AI health assistant. VytalCare integrates with Google Fit to retrieve fitness and wellness information such as step count, sleep duration, heart rate, calories burned, and distance travelled, allowing users to view their health information in a unified dashboard.
+The application requests access only to the Google user data necessary for its core functionality:
+
+Google Account information is used solely for secure authentication and user identification.
+Google Fit data (steps, sleep, heart rate, calories, and distance) is used to display health metrics, calculate wellness scores, generate personalized insights, and help users monitor their overall health.
+Google Calendar access is used to automatically create and synchronize medication reminders and healthcare appointments, ensuring users receive timely notifications.
+No Google user data is sold, shared with third parties for advertising, or used for purposes unrelated to the application's healthcare functionality.
+
+VytalCare is hosted on our verified domain:
+
+Homepage: https://vytalcare-gray.vercel.app/
+
+The application's Privacy Policy is publicly accessible without requiring users to sign in:
+
+Privacy Policy: https://vytalcare-gray.vercel.app/privacy.html
+
+The Terms of Service are also publicly available:
+
+Terms of Service: https://vytalcare-gray.vercel.app/terms.html
+
+These pages clearly describe how user information is collected, used, stored, and protected. Users can access both documents directly from the application's login page before signing in.
+
+VytalCare has been developed with the objective of making healthcare management more accessible, proactive, and reliable through the responsible use of artificial intelligence and secure Google services.
               </p>
 
               <br />
 
               <p className="text-center font-semibold text-lg">
-                Team Stranger Strings
+                From
               </p>
 
               <p className="text-center mt-2 leading-7">
@@ -985,7 +1005,7 @@ about: {
       <br />
 
       <p style={{ textAlign: "center", fontWeight: "600" }}>
-        Team Stranger Strings:
+        From: 
         <br />
         Swaraag Hebbar N
         <br />
