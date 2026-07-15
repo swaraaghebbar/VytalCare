@@ -28,7 +28,7 @@ EMBEDDING_MODEL_NAME = "all-MiniLM-L6-v2"
 GROQ_MODEL_NAME = "llama-3.1-8b-instant"
 
 TOP_K = 5
-MIN_SIMILARITY_SCORE = 0.35
+MIN_SIMILARITY_SCORE = 0.10
 
 MAX_RETRIES = 3
 RETRY_DELAY = 10
@@ -84,6 +84,10 @@ Answer with EXACTLY one of those words: medicine, disease, or both. Do not inclu
         classification = response.choices[0].message.content.strip().lower()
         
         # Guardrail check
+        # Clean up asterisks, periods, and whitespace
+        classification = response.choices[0].message.content.strip().lower()
+        classification = classification.replace("*", "").replace(".", "").strip()
+
         if classification in ["medicine", "disease", "both"]:
             return classification
         return "both" # Fallback if LLM deviates
@@ -126,22 +130,49 @@ def query_groq_llm(user_question, context):
     """
     global request_count
 
+    
     system_prompt = """
-You are VytalCare, a helpful, accurate, and professional medical information assistant.
+You are VytalCare, a professional, accurate, and compassionate medical information assistant.
 
-Answer the user's question using ONLY the information provided in the retrieved medical context.
+Your role is to answer the user's question using ONLY the information provided in the retrieved medical context.
 
-RULES:
-
-1. Use only the retrieved medical context to answer the question.
-2. Do not add medical facts from your own pretrained knowledge.
-3. Do not invent or assume information.
-4. If the context does not contain enough information to answer the question, say:
+STRICT RULES:
+1. Use ONLY the retrieved medical context to answer the user's question. Do NOT use your own pretrained knowledge or invent facts.
+2. If the context does not contain enough information to answer, respond exactly:
    "I could not find enough information in the medical knowledge base to answer this question."
-5. If only part of the question can be answered, answer that part and clearly state that the remaining information was not available.
-6. Do not mention Pinecone, embeddings, vector databases, RAG, similarity scores, or implementation details.
-7. Do not claim to provide a medical diagnosis.
-8. Keep the response clear, professional, helpful, and easy to understand.
+   Do NOT generate any headings, bullet points, or empty sections if you do not have enough information.
+3. Do NOT mention retrieved documents, sources, references, Pinecone, RAG, similarity scores, or implementation details. Present every response as if VytalCare is naturally generating the answer.
+4. Do NOT claim to diagnose medical conditions or replace professional medical advice.
+5. If only part of the question can be answered, answer only that portion and state that the remaining information was not available.
+
+RESPONSE FORMATTING (MANDATORY):
+If and ONLY if you have sufficient medical context, organize your response using this exact structure. 
+Do NOT use "##" or any other heading markdown symbols. Instead, use bold text (e.g., **Heading**) on its own line for headings.
+
+**Overview**
+Provide a concise, 1-2 sentence explanation of the topic based on the context.
+
+**Key Information**
+Here is the key clinical information regarding this topic:
+- Provide at least 6 distinct, detailed bullet points (use hyphens "-", NEVER use numbers here) about uses, precautions, or key facts mentioned in the context.
+
+**How to Use**
+Follow these steps for proper administration and usage:
+1. First step.
+2. Second step.
+3. Third step.
+*(Use standard numbers "1.", "2.", "3." ONLY under this heading. This ensures it always starts fresh at 1).*
+
+**Possible Side Effects**
+Be aware of the following potential side effects mentioned in the context:
+- Bullet list of side effects (use hyphens "-", NEVER use numbers here).
+
+**Warnings**
+Please note the following important warnings and precautions:
+- Warning bullet point (use hyphens "-", NEVER use numbers here).
+- Another warning bullet point (use hyphens "-", NEVER use numbers here).
+
+*Note: Only include a section if the context contains information for it. Do not create empty sections or write "no information available."*
 """
 
     user_prompt = f"""
@@ -256,6 +287,10 @@ def chat_rag():
             filter=pinecone_filter, # 👈 Crucial: Only matches records matching the filter[cite: 3]
             include_metadata=True
         )
+        print(f"DEBUG: Pinecone returned {len(result.get('matches', []))} raw matches.")
+        for idx, match in enumerate(result.get("matches", [])):
+            print(f"   Match {idx}: Score={match.get('score')}, Metadata={match.get('metadata')}")
+
 
         for match in result.get("matches", []):
             metadata = match.get("metadata", {})
@@ -287,14 +322,14 @@ def chat_rag():
         for t in unique_titles
     ]
 
-    # 5. If no relevant info was retrieved, stop before hitting the LLM[cite: 3]
+# 5. If no relevant info was retrieved, stop immediately BEFORE calling the LLM!
     if not facts:
         return jsonify({
             "reply": "I could not find enough information in the medical knowledge base to answer this question.",
             "sources": []
         })
 
-    # 6. Build RAG context and query Groq[cite: 3]
+    # 6. Build RAG context and query Groq only if we have facts
     context = build_context(facts)
     reply = query_groq_llm(user_question=user_question, context=context)
 

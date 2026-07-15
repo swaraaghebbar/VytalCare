@@ -1,7 +1,9 @@
-Flask
+flask
 flask-cors
+gunicorn
 python-dotenv
-pinecone
+pinecone-client
 sentence-transformers
 groq
-gunicorn
+lxml
+langchain-text-splitters
