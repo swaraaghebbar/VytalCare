@@ -57,6 +57,40 @@ except Exception as e:
 
 print("[OK] VytalCare is ready.")
 
+def classify_query(user_question):
+    """
+    Uses Groq to quickly classify if the query is about 
+    medicines, diseases, or both.
+    """
+    system_prompt = """
+You are a routing assistant for a medical chatbot.
+Determine if the user's query is asking about:
+1. A drug, pill, medicine, vaccine, or supplement (return 'medicine')
+2. A disease, virus, medical condition, symptom, or syndrome (return 'disease')
+3. Both, or if it's a general question combining them (e.g., "What medicine treats diabetes?") (return 'both')
+
+Answer with EXACTLY one of those words: medicine, disease, or both. Do not include punctuation, markdown, or other text.
+"""
+    try:
+        response = groq_client.chat.completions.create(
+            model=GROQ_MODEL_NAME, # Uses your fast llama model
+            messages=[
+                {"role": "system", "content": system_prompt},
+                {"role": "user", "content": f"Query: {user_question}"}
+            ],
+            temperature=0.0, # Zero temperature ensures strict consistency
+            max_tokens=10
+        )
+        classification = response.choices[0].message.content.strip().lower()
+        
+        # Guardrail check
+        if classification in ["medicine", "disease", "both"]:
+            return classification
+        return "both" # Fallback if LLM deviates
+    except Exception as e:
+        print(f"[Warning] Classification failed: {e}. Defaulting to 'both'.")
+        return "both" # Fallback to prevent app crash
+    
 # ==========================================
 # 3. SESSION REQUEST COUNTER
 # ==========================================
@@ -198,7 +232,19 @@ def chat_rag():
     if not user_question or not isinstance(user_question, str):
         return jsonify({"error": "Missing or invalid 'message' field."}), 400
 
-    # 1. Retrieve relevant facts and titles from Pinecone
+    # 1. Classify which medical channel to route to
+    channel = classify_query(user_question)
+    print(f"🧭 Routed query '{user_question[:30]}...' to channel: {channel}")
+
+    # 2. Build the Pinecone metadata filter based on the routed channel
+    pinecone_filter = {}
+    if channel == "medicine":
+        pinecone_filter = {"category": "medicine"}
+    elif channel == "disease":
+        pinecone_filter = {"category": "disease"}
+    # If the channel is 'both', pinecone_filter remains empty to search the entire database[cite: 3]
+
+    # 3. Retrieve relevant facts from Pinecone with the filter active
     facts = []
     titles = []
     
@@ -207,6 +253,7 @@ def chat_rag():
         result = index.query(
             vector=query_vector,
             top_k=TOP_K,
+            filter=pinecone_filter, # 👈 Crucial: Only matches records matching the filter[cite: 3]
             include_metadata=True
         )
 
@@ -228,9 +275,8 @@ def chat_rag():
                     
     except Exception as e:
         print(f"[Warning] Knowledge retrieval error: {e}")
-        # Proceed with empty facts if Pinecone fails
 
-    # 2. Map titles to unique MedlinePlus search URLs
+    # 4. Map titles to unique MedlinePlus search URLs[cite: 3]
     unique_titles = []
     for t in titles:
         if t not in unique_titles:
@@ -241,17 +287,15 @@ def chat_rag():
         for t in unique_titles
     ]
 
-    # 3. If no relevant info was retrieved, do not call the LLM
+    # 5. If no relevant info was retrieved, stop before hitting the LLM[cite: 3]
     if not facts:
         return jsonify({
             "reply": "I could not find enough information in the medical knowledge base to answer this question.",
             "sources": []
         })
 
-    # 4. Build context
+    # 6. Build RAG context and query Groq[cite: 3]
     context = build_context(facts)
-
-    # 5. Query Groq
     reply = query_groq_llm(user_question=user_question, context=context)
 
     return jsonify({

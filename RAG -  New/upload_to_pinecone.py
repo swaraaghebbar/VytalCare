@@ -84,7 +84,8 @@ for i in range(0, total_chunks, BATCH_SIZE):
             "values": embeddings[j],
             "metadata": {
                 "title": item['title'],
-                "text": item['text']
+                "text": item['text'],
+                "category": "disease"
             }
         })
     
