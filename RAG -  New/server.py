@@ -23,7 +23,6 @@ if not PINECONE_API_KEY or not GROQ_API_KEY:
     sys.exit(1)
 
 PINECONE_INDEX_NAME = "medlineplus-index"
-# SWAPPED: Replacing local model path with Pinecone's ultra-fast cloud inference model
 INFERENCE_MODEL_NAME = "multilingual-e5-large"
 GROQ_MODEL_NAME = "llama-3.1-8b-instant"
 
@@ -261,14 +260,13 @@ def chat_rag():
     if channel == "medicine":
         pinecone_filter = {"category": "medicine"}
     elif channel == "disease":
-        pinecone_filter = {"category": "disease"}[cite: 3]
+        pinecone_filter = {"category": "disease"}
 
     # 3. Retrieve relevant facts from Pinecone with the filter active
     facts = []
     titles = []
     
     try:
-        # CHANGED: Swapped local embedding execution for the serverless Pinecone Inference API call
         res = pc.inference.embed(
             model=INFERENCE_MODEL_NAME,
             inputs=[user_question],
@@ -276,10 +274,11 @@ def chat_rag():
         )
         query_vector = res.data[0].values
 
+        # FIXED: Removed stray markdown text from arguments
         result = index.query(
             vector=query_vector,
             top_k=TOP_K,
-            filter=pinecone_filter,[cite: 3]
+            filter=pinecone_filter,
             include_metadata=True
         )
         
@@ -304,7 +303,7 @@ def chat_rag():
     except Exception as e:
         print(f"[Warning] Knowledge retrieval error: {e}")
 
-    # 4. Map titles to unique MedlinePlus search URLs[cite: 3]
+    # 4. Map titles to unique MedlinePlus search URLs
     unique_titles = []
     for t in titles:
         if t not in unique_titles:
@@ -332,7 +331,6 @@ def chat_rag():
     })
 
 if __name__ == "__main__":
-    # Render binds automatically to the dynamic PORT variable
     port = int(os.environ.get("PORT", 3001))
     print(f"\n[Info] Python Backend running on http://localhost:{port}")
     app.run(host="0.0.0.0", port=port, debug=False)
