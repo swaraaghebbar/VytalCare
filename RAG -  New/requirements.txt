@@ -2,7 +2,7 @@ flask
 flask-cors
 gunicorn
 python-dotenv
-pinecone-client
+pinecone
 groq
 lxml
 langchain-text-splitters
