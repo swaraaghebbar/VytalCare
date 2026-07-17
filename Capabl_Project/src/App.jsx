@@ -897,15 +897,12 @@ const LoginPage = ({ handleLogin, error }) => {
 </div>
 
     <div className="mt-8 text-center">
-      <h3 className="text-xl font-semibold text-text-main dark:text-white">
-        Team Stranger Strings
-      </h3>
 
       <p className="mt-3 text-text-muted dark:text-slate-300 leading-8">
-        Aditya Prakash<br />
-        Ananya Raghuveer<br />
         Swaraag Hebbar N<br />
-        Shashank Ravindra
+        Shashank Ravindra <br />
+        Ananya Raghuveer<br />
+  
       </p>
     </div>
 <div className="mt-12 pt-8 border-t border-slate-200 dark:border-slate-700">
