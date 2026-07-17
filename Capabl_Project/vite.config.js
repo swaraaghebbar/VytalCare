@@ -6,7 +6,7 @@ export default defineConfig({
   server: {
     proxy: {
       '/api': {
-        target: 'https://vytalcare-scy4.onrender.com',
+        target: 'https://vytalcare-scy4.onrender.com/health',
         changeOrigin: true,
         secure: false,
         rewrite: (path) => path
