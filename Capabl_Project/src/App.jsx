@@ -2827,7 +2827,8 @@ RULES:
         else {
           console.log("💬 Text message → RAG Backend");
 
-          const response = await fetch("/api/chat-rag", {
+          const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || "";
+          const response = await fetch(`${BACKEND_URL}/api/chat-rag`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
