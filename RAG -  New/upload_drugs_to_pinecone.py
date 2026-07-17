@@ -4,23 +4,24 @@ import requests
 import unicodedata
 from dotenv import load_dotenv
 from pinecone import Pinecone
-from sentence_transformers import SentenceTransformer
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 
 load_dotenv()
 PINECONE_API_KEY = os.getenv("PINECONE_API_KEY")
 
-# 1. Connect to Pinecone & Load Embeddings
+if not PINECONE_API_KEY:
+    raise ValueError("❌ Error: Missing PINECONE_API_KEY in .env file.")
+
+# 1. Connect to Pinecone
 pc = Pinecone(api_key=PINECONE_API_KEY)
 index = pc.Index("medlineplus-index")
-embed_model = SentenceTransformer('sentence-transformers/all-MiniLM-L6-v2')
 
 def clean_id_to_ascii(text_id):
     normalized = unicodedata.normalize('NFKD', text_id)
     ascii_id = normalized.encode('ascii', 'ignore').decode('ascii')
     return "".join([c for c in ascii_id.replace(' ', '-').replace('/', '-') if c.isalnum() or c in ['-', '_']])
 
-# 2. Fetch Top Medicines from openFDA
+# 2. Fetch Top Medicines from openFDA[cite: 5]
 def fetch_fda_drugs(limit=100):
     print(f"📡 Fetching {limit} drug labels from openFDA...")
     url = f"https://api.fda.gov/drug/label.json?limit={limit}"
@@ -64,8 +65,8 @@ def fetch_fda_drugs(limit=100):
         
     return documents
 
-# 3. Process, Chunk, and Upload
-drugs = fetch_fda_drugs(limit=100) # Feel free to increase this up to 1000
+# 3. Process, Chunk, and Upload via Cloud Inference API[cite: 5]
+drugs = fetch_fda_drugs(limit=100)
 text_splitter = RecursiveCharacterTextSplitter(chunk_size=500, chunk_overlap=50)
 
 final_chunks = []
@@ -79,25 +80,39 @@ for drug in drugs:
             "title": drug['title']
         })
 
-print(f"🚀 Vectorizing & uploading {len(final_chunks)} medicine chunks...")
-BATCH_SIZE = 100
+print(f"🚀 Vectorizing via Cloud & uploading {len(final_chunks)} medicine chunks...")
+BATCH_SIZE = 64
+
 for i in range(0, len(final_chunks), BATCH_SIZE):
     batch = final_chunks[i:i + BATCH_SIZE]
     batch_texts = [item['text'] for item in batch]
-    embeddings = embed_model.encode(batch_texts).tolist()
     
-    vectors_to_upsert = []
-    for j, item in enumerate(batch):
-        vectors_to_upsert.append({
-            "id": item['id'],
-            "values": embeddings[j],
-            "metadata": {
-                "title": item['title'],
-                "text": item['text'],
-                "category": "medicine"  # <-- Crucial metadata tag!
-            }
-        })
-    index.upsert(vectors=vectors_to_upsert)
-    print(f"Uploaded batch {i // BATCH_SIZE + 1}...")
+    try:
+        # Query Pinecone Inference API for 1024-dimensional vector calculations
+        res = pc.inference.embed(
+            model="multilingual-e5-large",
+            inputs=batch_texts,
+            parameters={"input_type": "passage", "truncate": "END"}
+        )
+        
+        vectors_to_upsert = []
+        for j, item in enumerate(batch):
+            vectors_to_upsert.append({
+                "id": item['id'],
+                "values": res.data[j].values,
+                "metadata": {
+                    "title": item['title'],
+                    "text": item['text'],
+                    "category": "medicine"  # <-- Crucial metadata tag for routing filter![cite: 5]
+                }
+            })
+        
+        index.upsert(vectors=vectors_to_upsert)
+        print(f"Uploaded batch {i // BATCH_SIZE + 1}...")
+        
+    except Exception as e:
+        print(f"❌ Failed to cloud embed/upload drug batch: {e}")
+        time.sleep(2)
+        continue
 
-print("🎉 Medicines successfully added to Pinecone!")
+print("🎉 Medicines successfully added to Pinecone Vector Database via Cloud Inference API!")

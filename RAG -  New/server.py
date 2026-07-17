@@ -6,7 +6,6 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 from dotenv import load_dotenv
 from pinecone import Pinecone
-from sentence_transformers import SentenceTransformer
 from groq import Groq
 
 # ==========================================
@@ -24,7 +23,8 @@ if not PINECONE_API_KEY or not GROQ_API_KEY:
     sys.exit(1)
 
 PINECONE_INDEX_NAME = "medlineplus-index"
-EMBEDDING_MODEL_NAME = "all-MiniLM-L6-v2"
+# SWAPPED: Replacing local model path with Pinecone's ultra-fast cloud inference model
+INFERENCE_MODEL_NAME = "multilingual-e5-large"
 GROQ_MODEL_NAME = "llama-3.1-8b-instant"
 
 TOP_K = 5
@@ -42,14 +42,7 @@ print("[Info] Connecting to services...")
 try:
     pc = Pinecone(api_key=PINECONE_API_KEY)
     index = pc.Index(PINECONE_INDEX_NAME)
-
-    embedding_model = SentenceTransformer(
-        EMBEDDING_MODEL_NAME
-    )
-
-    groq_client = Groq(
-        api_key=GROQ_API_KEY
-    )
+    groq_client = Groq(api_key=GROQ_API_KEY)
 
 except Exception as e:
     print(f"[Error] Initialization failed: {e}")
@@ -73,27 +66,24 @@ Answer with EXACTLY one of those words: medicine, disease, or both. Do not inclu
 """
     try:
         response = groq_client.chat.completions.create(
-            model=GROQ_MODEL_NAME, # Uses your fast llama model
+            model=GROQ_MODEL_NAME,
             messages=[
                 {"role": "system", "content": system_prompt},
                 {"role": "user", "content": f"Query: {user_question}"}
             ],
-            temperature=0.0, # Zero temperature ensures strict consistency
+            temperature=0.0,
             max_tokens=10
         )
-        classification = response.choices[0].message.content.strip().lower()
         
-        # Guardrail check
-        # Clean up asterisks, periods, and whitespace
         classification = response.choices[0].message.content.strip().lower()
         classification = classification.replace("*", "").replace(".", "").strip()
 
         if classification in ["medicine", "disease", "both"]:
             return classification
-        return "both" # Fallback if LLM deviates
+        return "both"
     except Exception as e:
         print(f"[Warning] Classification failed: {e}. Defaulting to 'both'.")
-        return "both" # Fallback to prevent app crash
+        return "both"
     
 # ==========================================
 # 3. SESSION REQUEST COUNTER
@@ -130,7 +120,6 @@ def query_groq_llm(user_question, context):
     """
     global request_count
 
-    
     system_prompt = """
 You are VytalCare, a professional, accurate, and compassionate medical information assistant.
 
@@ -161,7 +150,7 @@ Follow these steps for proper administration and usage:
 1. First step.
 2. Second step.
 3. Third step.
-*(Use standard numbers "1.", "2.", "3." ONLY under this heading. This ensures it always starts fresh at 1).*
+*(Use standard numbers "1.", "2.", "3." ONLY under this heading).*
 
 **Possible Side Effects**
 Be aware of the following potential side effects mentioned in the context:
@@ -272,25 +261,29 @@ def chat_rag():
     if channel == "medicine":
         pinecone_filter = {"category": "medicine"}
     elif channel == "disease":
-        pinecone_filter = {"category": "disease"}
-    # If the channel is 'both', pinecone_filter remains empty to search the entire database[cite: 3]
+        pinecone_filter = {"category": "disease"}[cite: 3]
 
     # 3. Retrieve relevant facts from Pinecone with the filter active
     facts = []
     titles = []
     
     try:
-        query_vector = embedding_model.encode(user_question).tolist()
+        # CHANGED: Swapped local embedding execution for the serverless Pinecone Inference API call
+        res = pc.inference.embed(
+            model=INFERENCE_MODEL_NAME,
+            inputs=[user_question],
+            parameters={"input_type": "query"}
+        )
+        query_vector = res.data[0].values
+
         result = index.query(
             vector=query_vector,
             top_k=TOP_K,
-            filter=pinecone_filter, # 👈 Crucial: Only matches records matching the filter[cite: 3]
+            filter=pinecone_filter,[cite: 3]
             include_metadata=True
         )
+        
         print(f"DEBUG: Pinecone returned {len(result.get('matches', []))} raw matches.")
-        for idx, match in enumerate(result.get("matches", [])):
-            print(f"   Match {idx}: Score={match.get('score')}, Metadata={match.get('metadata')}")
-
 
         for match in result.get("matches", []):
             metadata = match.get("metadata", {})
@@ -322,7 +315,7 @@ def chat_rag():
         for t in unique_titles
     ]
 
-# 5. If no relevant info was retrieved, stop immediately BEFORE calling the LLM!
+    # 5. If no relevant info was retrieved, stop immediately BEFORE calling the LLM!
     if not facts:
         return jsonify({
             "reply": "I could not find enough information in the medical knowledge base to answer this question.",
@@ -339,6 +332,7 @@ def chat_rag():
     })
 
 if __name__ == "__main__":
+    # Render binds automatically to the dynamic PORT variable
     port = int(os.environ.get("PORT", 3001))
     print(f"\n[Info] Python Backend running on http://localhost:{port}")
     app.run(host="0.0.0.0", port=port, debug=False)
