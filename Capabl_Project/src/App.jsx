@@ -901,7 +901,7 @@ const LoginPage = ({ handleLogin, error }) => {
       <p className="mt-3 text-text-muted dark:text-slate-300 leading-8">
         From: <br />
         Swaraag Hebbar N<br />
-        Shashank Ravindra br
+        Shashank Ravindra <br />
         Ananya Raghuveer<br />
   
       </p>
