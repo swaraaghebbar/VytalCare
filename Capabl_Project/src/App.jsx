@@ -766,7 +766,7 @@ const LoginPage = ({ handleLogin, error }) => {
 
   return (
   <div className="min-h-screen bg-background dark:bg-slate-950">
-    <div className="flex justify-center pt-20 pb-12 px-6">
+    <div className="flex flex-col items-center pt-20 pb-12 px-6">
     <div className="max-w-md w-full p-8 rounded-3xl shadow-xl bg-surface dark:bg-slate-900 text-center border border-slate-100 dark:border-slate-800 animate-fade-in">
       <div className="w-20 h-20 bg-white dark:bg-slate-800 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg shadow-slate-200/50 dark:shadow-none border border-slate-100 dark:border-slate-700">
         <img
@@ -806,7 +806,7 @@ const LoginPage = ({ handleLogin, error }) => {
       <div className="w-24 h-1 rounded-full bg-primary/40"></div>
     </div>
 
-    <div className="max-w-3xl mx-auto px-6 pb-20">
+    <div className="max-w-4xl w-full mt-3">
 
   <div className="bg-surface dark:bg-slate-900 rounded-3xl shadow-xl border border-slate-100 dark:border-slate-800 p-8">
 
@@ -846,7 +846,7 @@ const LoginPage = ({ handleLogin, error }) => {
 </p>
 
 <p className="mt-6 text-text-muted dark:text-slate-300 leading-8 text-justify">
-  Developed by <strong>Team Stranger Strings</strong>, VytalCare aims to make
+ VytalCare aims to make
   preventive healthcare more accessible by combining intelligent automation,
   AI-powered assistance, and secure cloud technologies into a single,
   user-centric platform.
@@ -902,14 +902,13 @@ const LoginPage = ({ handleLogin, error }) => {
         From: <br />
         Swaraag Hebbar N<br />
         Shashank Ravindra <br />
-        Ananya Raghuveer<br />
-  
+        Ananya Raghuveer
       </p>
     </div>
-<div className="mt-12 pt-8 border-t border-slate-200 dark:border-slate-700">
+<div className="mt-5 pt-5 border-t border-slate-200 dark:border-slate-700">
 
   <div className="text-center text-sm text-text-muted dark:text-slate-400">
-    © 2026 VytalCare • Built by <strong>Team Stranger Strings</strong>
+    © 2026 VytalCare 
   </div>
 
   <div className="flex justify-center items-center gap-6 mt-4 text-sm">
@@ -1020,7 +1019,7 @@ const METRIC_INFO = {
 about: {
   title: "About VytalCare",
   desc: (
-    <>
+    <div style={{ textAlign: "center" }}>
       <p>
         VytalCare is your Agentic, AI-powered health companion designed to move
         beyond simple tracking. Functioning as an intelligent agent, it
@@ -1037,8 +1036,8 @@ about: {
 
       <br />
 
-      <p style={{ textAlign: "center", fontWeight: "600" }}>
-        From: 
+      <p style={{ fontWeight: "600" }}>
+        From:
         <br />
         Swaraag Hebbar N
         <br />
@@ -1046,7 +1045,7 @@ about: {
         <br />
         Ananya Raghuveer
       </p>
-    </>
+    </div>
   )
 }
 };
