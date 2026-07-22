@@ -96,8 +96,8 @@ const StepCompletionRing = ({ steps, goal, size = 150 }) => {
         />
       </svg>
       <div className="absolute flex flex-col items-center justify-center">
-        <p className={`text-4xl font-extrabold ${isComplete ? 'text-green-600' : 'text-primary'}`}>{percentage}%</p>
-        <p className="text-sm font-semibold mt-1 text-text-muted">Completed</p>
+        <p className={`font-extrabold ${size < 130 ? 'text-2xl' : 'text-4xl'} ${isComplete ? 'text-green-600' : 'text-primary'}`}>{percentage}%</p>
+        <p className={`${size < 130 ? 'text-[10px]' : 'text-sm'} font-semibold mt-1 text-text-muted`}>Completed</p>
       </div>
     </div>
   );
@@ -175,8 +175,8 @@ const HealthScoreRing = ({ score, size = 180 }) => {
         />
       </svg>
       <div className="absolute flex flex-col items-center justify-center">
-        <p className={`text-5xl font-extrabold ${color}`}>{percentage}%</p>
-        <p className="text-sm font-semibold mt-1 text-text-muted">Health Score</p>
+        <p className={`font-extrabold ${size < 150 ? 'text-3xl' : 'text-5xl'} ${color}`}>{percentage}%</p>
+        <p className={`${size < 150 ? 'text-xs' : 'text-sm'} font-semibold mt-1 text-text-muted`}>Health Score</p>
       </div>
     </div>
   );
@@ -228,8 +228,8 @@ const BMIGauge = ({ bmi, theme, colorBlindMode }) => {
   const centerDotColor = isLight ? "#0F172A" : "#E5E7EB";
 
   return (
-    <div className="flex flex-col items-center p-4">
-      <svg width="220" height="140" viewBox="0 0 220 140">
+    <div className="flex flex-col items-center p-4 w-full">
+      <svg width="100%" height="auto" className="max-w-[200px]" viewBox="0 0 220 140">
         {/* COLOURED BMI SEGMENTS */}
         {segments.map((seg, i) => {
           const startAngle = angleForValue(seg.range[0]);
@@ -566,8 +566,8 @@ const ProfileSection = ({ db, userId, appId, theme, setTheme, colorBlindMode, se
             <InputField label="Phone No" name="userPhone" type="tel" placeholder="+1 234 567 890" isEditing={isEditing} profile={profile} handleChange={handleChange} />
             <InputField label="Email ID" name="userEmail" type="email" placeholder="john@example.com" isEditing={isEditing} profile={profile} handleChange={handleChange} />
             <div className="grid grid-cols-2 gap-4">
-              <InputField label="Date of Birth" name="userDob" type="date" placeholder="YYYY-MM-DD" isEditing={isEditing} profile={profile} handleChange={handleChange} />
-              <InputField label="Age" name="userAge" type="number" placeholder="30" isEditing={isEditing} profile={profile} handleChange={handleChange} />
+              <InputField label="Date of Birth" name="userDob" type="date" placeholder="YYYY-MM-DD" isEditing={isEditing} profile={profile} handleChange={handleChange} className="col-span-2 sm:col-span-1 mb-3" />
+              <InputField label="Age" name="userAge" type="number" placeholder="30" isEditing={isEditing} profile={profile} handleChange={handleChange} className="col-span-1 mb-3" />
               <InputField label="Sex" name="userSex" placeholder="M/F" isEditing={isEditing} profile={profile} handleChange={handleChange} />
               <InputField label="Height" name="userHeight" placeholder="175 cm" isEditing={isEditing} profile={profile} handleChange={handleChange} />
               <InputField label="Weight" name="userWeight" placeholder="70 kg" isEditing={isEditing} profile={profile} handleChange={handleChange} />
@@ -740,8 +740,8 @@ const ProfileSection = ({ db, userId, appId, theme, setTheme, colorBlindMode, se
   );
 };
 
-const InputField = ({ label, name, type = "text", placeholder, isEditing, profile, handleChange }) => (
-  <div className="mb-3">
+const InputField = ({ label, name, type = "text", placeholder, isEditing, profile, handleChange, className = "mb-3" }) => (
+  <div className={className}>
     <label className="block text-xs font-semibold text-text-muted dark:text-slate-400 mb-1 uppercase tracking-wider">{label}</label>
     {isEditing ? (
       <input
@@ -765,180 +765,180 @@ const LoginPage = ({ handleLogin, error }) => {
   const [showAbout, setShowAbout] = useState(false);
 
   return (
-  <div className="min-h-screen bg-background dark:bg-slate-950">
-    <div className="flex flex-col items-center pt-20 pb-12 px-6">
-    <div className="max-w-md w-full p-8 rounded-3xl shadow-xl bg-surface dark:bg-slate-900 text-center border border-slate-100 dark:border-slate-800 animate-fade-in">
-      <div className="w-20 h-20 bg-white dark:bg-slate-800 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg shadow-slate-200/50 dark:shadow-none border border-slate-100 dark:border-slate-700">
-        <img
-          src={appIcon}
-          alt="VytalCare Logo"
-          className="w-full h-full object-contain"
-        />
-      </div>
-      <h1 className="text-4xl font-bold mb-3 text-text-main dark:text-white tracking-tight">VytalCare</h1>
-      <p className="text-lg mb-8 text-text-muted dark:text-slate-400">
-        Your personal AI health companion. Sign in to manage medications and track your vitals.
-      </p>
+    <div className="min-h-screen bg-background dark:bg-slate-950">
+      <div className="flex flex-col items-center pt-20 pb-12 px-6">
+        <div className="max-w-md w-full p-8 rounded-3xl shadow-xl bg-surface dark:bg-slate-900 text-center border border-slate-100 dark:border-slate-800 animate-fade-in">
+          <div className="w-20 h-20 bg-white dark:bg-slate-800 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg shadow-slate-200/50 dark:shadow-none border border-slate-100 dark:border-slate-700">
+            <img
+              src={appIcon}
+              alt="VytalCare Logo"
+              className="w-full h-full object-contain"
+            />
+          </div>
+          <h1 className="text-4xl font-bold mb-3 text-text-main dark:text-white tracking-tight">VytalCare</h1>
+          <p className="text-lg mb-8 text-text-muted dark:text-slate-400">
+            Your personal AI health companion. Sign in to manage medications and track your vitals.
+          </p>
 
-      {error && !error.type && (
-        <div className="p-4 rounded-xl mb-6 bg-red-50 text-red-600 border border-red-100 text-sm font-medium">
-          {typeof error === 'string' ? error : JSON.stringify(error)}
+          {error && !error.type && (
+            <div className="p-4 rounded-xl mb-6 bg-red-50 text-red-600 border border-red-100 text-sm font-medium">
+              {typeof error === 'string' ? error : JSON.stringify(error)}
+            </div>
+          )}
+
+          <button
+            onClick={handleLogin}
+            className="w-full py-4 text-white text-lg font-bold rounded-xl transition-all duration-200 shadow-lg shadow-primary/20 hover:shadow-primary/40 hover:-translate-y-0.5 bg-primary flex items-center justify-center group"
+          >
+            <img
+              src="https://www.gstatic.com/images/icons/material/system/2x/google_white_24dp.png"
+              alt="Google icon"
+              className="w-5 h-5 mr-3 group-hover:scale-110 transition-transform"
+            />
+            Sign In with Google
+          </button>
+
+          <div className="mt-6 flex flex-col items-center gap-4">
+          </div>
         </div>
-      )}
 
-      <button
-        onClick={handleLogin}
-        className="w-full py-4 text-white text-lg font-bold rounded-xl transition-all duration-200 shadow-lg shadow-primary/20 hover:shadow-primary/40 hover:-translate-y-0.5 bg-primary flex items-center justify-center group"
-      >
-        <img
-          src="https://www.gstatic.com/images/icons/material/system/2x/google_white_24dp.png"
-          alt="Google icon"
-          className="w-5 h-5 mr-3 group-hover:scale-110 transition-transform"
-        />
-        Sign In with Google
-      </button>
-      
-         <div className="mt-6 flex flex-col items-center gap-4">
-      </div>
+        <div className="flex justify-center py-10">
+          <div className="w-24 h-1 rounded-full bg-primary/40"></div>
         </div>
 
-    <div className="flex justify-center py-10">
-      <div className="w-24 h-1 rounded-full bg-primary/40"></div>
-    </div>
+        <div className="max-w-4xl w-full mt-3">
 
-    <div className="max-w-4xl w-full mt-3">
+          <div className="bg-surface dark:bg-slate-900 rounded-3xl shadow-xl border border-slate-100 dark:border-slate-800 p-8">
 
-  <div className="bg-surface dark:bg-slate-900 rounded-3xl shadow-xl border border-slate-100 dark:border-slate-800 p-8">
+            <h2 className="text-3xl font-bold text-center text-text-main dark:text-white mb-6">
+              About VytalCare
+            </h2>
 
-    <h2 className="text-3xl font-bold text-center text-text-main dark:text-white mb-6">
-      About VytalCare
-    </h2>
+            <p className="text-text-muted dark:text-slate-300 leading-8 text-justify">
+              <strong>VytalCare</strong> is an AI-powered personal healthcare companion
+              designed to help users manage their daily wellness through intelligent
+              health monitoring, medication management, and personalized health insights.
+              The application combines artificial intelligence with health data
+              integration to provide a proactive, secure, and user-friendly healthcare
+              experience.
+            </p>
 
-    <p className="text-text-muted dark:text-slate-300 leading-8 text-justify">
-  <strong>VytalCare</strong> is an AI-powered personal healthcare companion
-  designed to help users manage their daily wellness through intelligent
-  health monitoring, medication management, and personalized health insights.
-  The application combines artificial intelligence with health data
-  integration to provide a proactive, secure, and user-friendly healthcare
-  experience.
-</p>
+            <p className="mt-6 text-text-muted dark:text-slate-300 leading-8 text-justify">
+              Users can securely sign in with their Google account to access features
+              including medication reminders, prescription scanning, health metric
+              tracking, emergency contact management, and an AI health assistant.
+              VytalCare integrates with Google Fit to retrieve fitness and wellness
+              information such as step count, sleep duration, heart rate, calories
+              burned, and distance travelled, allowing users to view their health
+              information in one unified dashboard.
+            </p>
 
-<p className="mt-6 text-text-muted dark:text-slate-300 leading-8 text-justify">
-  Users can securely sign in with their Google account to access features
-  including medication reminders, prescription scanning, health metric
-  tracking, emergency contact management, and an AI health assistant.
-  VytalCare integrates with Google Fit to retrieve fitness and wellness
-  information such as step count, sleep duration, heart rate, calories
-  burned, and distance travelled, allowing users to view their health
-  information in one unified dashboard.
-</p>
+            <p className="mt-6 text-text-muted dark:text-slate-300 leading-8 text-justify">
+              The application requests access only to the Google user data necessary for
+              its core functionality. Google account information is used solely for secure
+              authentication and user identification. Google Fit data is used to display
+              health metrics, calculate wellness scores, generate personalized insights,
+              and help users monitor their overall health. Google Calendar integration is
+              used to automatically create and synchronize medication reminders, ensuring
+              users receive timely notifications. VytalCare does not sell or share user
+              data with third parties for advertising purposes and only uses the requested
+              information to provide its healthcare services.
+            </p>
 
-<p className="mt-6 text-text-muted dark:text-slate-300 leading-8 text-justify">
-  The application requests access only to the Google user data necessary for
-  its core functionality. Google account information is used solely for secure
-  authentication and user identification. Google Fit data is used to display
-  health metrics, calculate wellness scores, generate personalized insights,
-  and help users monitor their overall health. Google Calendar integration is
-  used to automatically create and synchronize medication reminders, ensuring
-  users receive timely notifications. VytalCare does not sell or share user
-  data with third parties for advertising purposes and only uses the requested
-  information to provide its healthcare services.
-</p>
+            <p className="mt-6 text-text-muted dark:text-slate-300 leading-8 text-justify">
+              VytalCare aims to make
+              preventive healthcare more accessible by combining intelligent automation,
+              AI-powered assistance, and secure cloud technologies into a single,
+              user-centric platform.
+            </p>
 
-<p className="mt-6 text-text-muted dark:text-slate-300 leading-8 text-justify">
- VytalCare aims to make
-  preventive healthcare more accessible by combining intelligent automation,
-  AI-powered assistance, and secure cloud technologies into a single,
-  user-centric platform.
-</p>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mt-10">
 
-<div className="grid grid-cols-1 md:grid-cols-2 gap-5 mt-10">
+              <div className="rounded-2xl border border-slate-200 dark:border-slate-700 p-5">
+                <h4 className="text-lg font-semibold text-primary mb-2">
+                  💊 Smart Medication Management
+                </h4>
+                <p className="text-sm text-text-muted dark:text-slate-300 leading-7">
+                  Create medication reminders manually or automatically from prescription
+                  images. Sync reminders directly with Google Calendar so you never miss a dose.
+                </p>
+              </div>
 
-  <div className="rounded-2xl border border-slate-200 dark:border-slate-700 p-5">
-    <h4 className="text-lg font-semibold text-primary mb-2">
-      💊 Smart Medication Management
-    </h4>
-    <p className="text-sm text-text-muted dark:text-slate-300 leading-7">
-      Create medication reminders manually or automatically from prescription
-      images. Sync reminders directly with Google Calendar so you never miss a dose.
-    </p>
-  </div>
+              <div className="rounded-2xl border border-slate-200 dark:border-slate-700 p-5">
+                <h4 className="text-lg font-semibold text-primary mb-2">
+                  📊 Health Monitoring
+                </h4>
+                <p className="text-sm text-text-muted dark:text-slate-300 leading-7">
+                  Track steps, sleep, calories, heart rate, hydration, BMI, and distance
+                  using Google Fit integration and interactive visualizations.
+                </p>
+              </div>
 
-  <div className="rounded-2xl border border-slate-200 dark:border-slate-700 p-5">
-    <h4 className="text-lg font-semibold text-primary mb-2">
-      📊 Health Monitoring
-    </h4>
-    <p className="text-sm text-text-muted dark:text-slate-300 leading-7">
-      Track steps, sleep, calories, heart rate, hydration, BMI, and distance
-      using Google Fit integration and interactive visualizations.
-    </p>
-  </div>
+              <div className="rounded-2xl border border-slate-200 dark:border-slate-700 p-5">
+                <h4 className="text-lg font-semibold text-primary mb-2">
+                  🤖 AI Health Assistant
+                </h4>
+                <p className="text-sm text-text-muted dark:text-slate-300 leading-7">
+                  Ask health-related questions through an AI assistant powered by trusted
+                  medical sources to receive reliable educational information.
+                </p>
+              </div>
 
-  <div className="rounded-2xl border border-slate-200 dark:border-slate-700 p-5">
-    <h4 className="text-lg font-semibold text-primary mb-2">
-      🤖 AI Health Assistant
-    </h4>
-    <p className="text-sm text-text-muted dark:text-slate-300 leading-7">
-      Ask health-related questions through an AI assistant powered by trusted
-      medical sources to receive reliable educational information.
-    </p>
-  </div>
+              <div className="rounded-2xl border border-slate-200 dark:border-slate-700 p-5">
+                <h4 className="text-lg font-semibold text-primary mb-2">
+                  🚑 Emergency Support
+                </h4>
+                <p className="text-sm text-text-muted dark:text-slate-300 leading-7">
+                  Store caregiver and emergency contact information for quick access during
+                  urgent situations.
+                </p>
+              </div>
 
-  <div className="rounded-2xl border border-slate-200 dark:border-slate-700 p-5">
-    <h4 className="text-lg font-semibold text-primary mb-2">
-      🚑 Emergency Support
-    </h4>
-    <p className="text-sm text-text-muted dark:text-slate-300 leading-7">
-      Store caregiver and emergency contact information for quick access during
-      urgent situations.
-    </p>
-  </div>
+            </div>
 
-</div>
+            <div className="mt-8 text-center">
 
-    <div className="mt-8 text-center">
+              <p className="mt-3 text-text-muted dark:text-slate-300 leading-8">
+                From: <br />
+                Swaraag Hebbar N<br />
+                Shashank Ravindra <br />
+                Ananya Raghuveer
+              </p>
+            </div>
+            <div className="mt-5 pt-5 border-t border-slate-200 dark:border-slate-700">
 
-      <p className="mt-3 text-text-muted dark:text-slate-300 leading-8">
-        From: <br />
-        Swaraag Hebbar N<br />
-        Shashank Ravindra <br />
-        Ananya Raghuveer
-      </p>
-    </div>
-<div className="mt-5 pt-5 border-t border-slate-200 dark:border-slate-700">
+              <div className="text-center text-sm text-text-muted dark:text-slate-400">
+                © 2026 VytalCare
+              </div>
 
-  <div className="text-center text-sm text-text-muted dark:text-slate-400">
-    © 2026 VytalCare 
-  </div>
+              <div className="flex justify-center items-center gap-6 mt-4 text-sm">
 
-  <div className="flex justify-center items-center gap-6 mt-4 text-sm">
+                <a
+                  href="/privacy.html"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-primary hover:underline"
+                >
+                  Privacy Policy
+                </a>
 
-    <a
-      href="/privacy.html"
-      target="_blank"
-      rel="noopener noreferrer"
-      className="text-primary hover:underline"
-    >
-      Privacy Policy
-    </a>
+                <a
+                  href="/terms.html"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-primary hover:underline"
+                >
+                  Terms of Service
+                </a>
 
-    <a
-      href="/terms.html"
-      target="_blank"
-      rel="noopener noreferrer"
-      className="text-primary hover:underline"
-    >
-      Terms of Service
-    </a>
+              </div>
 
-  </div>
+            </div>
+          </div>
 
-</div>
-    </div>
+        </div>
 
-  </div>
-
-</div>
+      </div>
     </div>
   );
 };
@@ -1016,45 +1016,45 @@ const METRIC_INFO = {
     title: "Heart Rate",
     desc: "Measured in Beats Per Minute (BPM). A lower resting heart rate (typically 60-100 BPM) generally indicates better cardiovascular fitness and efficient heart function."
   },
-about: {
-  title: "About VytalCare",
-  desc: (
-    <div style={{ textAlign: "center" }}>
-      <p>
-        VytalCare is your Agentic, AI-powered health companion designed to move
-        beyond simple tracking. Functioning as an intelligent agent, it
-        proactively manages your wellness by autonomously syncing smart
-        medication reminders to your calendar, triggering automated health
-        workflows, and converting prescription images into actionable schedules.
-      </p>
+  about: {
+    title: "About VytalCare",
+    desc: (
+      <div style={{ textAlign: "center" }}>
+        <p>
+          VytalCare is your Agentic, AI-powered health companion designed to move
+          beyond simple tracking. Functioning as an intelligent agent, it
+          proactively manages your wellness by autonomously syncing smart
+          medication reminders to your calendar, triggering automated health
+          workflows, and converting prescription images into actionable schedules.
+        </p>
 
-      <br />
-
-      <p>
-        VytalCare was developed with passion and precision.
-      </p>
-
-      <br />
-
-      <p style={{ fontWeight: "600" }}>
-        From:
         <br />
-        Swaraag Hebbar N
+
+        <p>
+          VytalCare was developed with passion and precision.
+        </p>
+
         <br />
-        Shashank Ravindra
-        <br />
-        Ananya Raghuveer
-      </p>
-    </div>
-  )
-}
+
+        <p style={{ fontWeight: "600" }}>
+          From:
+          <br />
+          Swaraag Hebbar N
+          <br />
+          Shashank Ravindra
+          <br />
+          Ananya Raghuveer
+        </p>
+      </div>
+    )
+  }
 };
 
 const parseAssistantResponse = (text = "") => {
   // Remove "SOURCES: ..." or "Sources:" and everything after it to prevent double rendering
   // The sources are already passed separately in msg.sources by the backend
   const cleanText = text.replace(/SOURCES?:[\s\S]*/gi, "").trim();
-  
+
   const sections = {};
   const regex = /(ANSWER|WHAT YOU CAN DO|WHEN TO SEE A DOCTOR|DISCLAIMER):([\s\S]*?)(?=\n[A-Z ]+:\n|$)/g;
   let match;
@@ -1111,6 +1111,8 @@ const App = () => {
   const [activeTab, setActiveTab] = useState('reminders');
   //For Metric Description
   const [activeInfoMetric, setActiveInfoMetric] = useState(null);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isMobileViewport, setIsMobileViewport] = useState(window.innerWidth < 768);
 
   // >> NEW: State for "Taken" Tracking and Time <<
   const [takenMedications, setTakenMedications] = useState(new Set());
@@ -1126,6 +1128,15 @@ const App = () => {
       setCurrentDateKey(prev => (prev !== key ? key : prev));
     }, 60000);
     return () => clearInterval(timer);
+  }, []);
+
+  // Viewport Resize Listener
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobileViewport(window.innerWidth < 768);
+    };
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
   }, []);
 
   // Accessibility State
@@ -2663,7 +2674,7 @@ CRITICAL: Create tables using proper markdown format with | characters only.
 DO NOT use --- separator lines in tables. 
 Table structure must be: | Header1 | Header2 | Header3 | followed by | row1 | data | data |
 Keep tables compact and aligned properly. Focus on key improvements and trends.`;
-   const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`;
+    const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`;
 
     const payload = {
       contents: [{ parts: [{ text: prompt }] }],
@@ -2747,7 +2758,7 @@ Keep tables compact and aligned properly. Focus on key improvements and trends.`
         let modelText = "";
         let modelSources = [];
 
- 
+
         // FIND THE "BRANCH A" BLOCK AND REPLACE IT WITH THIS:
 
         // ============================================================
@@ -2767,12 +2778,12 @@ Keep tables compact and aligned properly. Focus on key improvements and trends.`
               body: formData
             }
           );
-          
+
           const uploadResult = await uploadResponse.json();
           if (!uploadResult.file || !uploadResult.file.uri) {
             throw new Error("Gemini file upload failed: " + (uploadResult.error?.message || "Unknown error"));
           }
-          
+
           const fileUri = uploadResult.file.uri;
           console.log("File uploaded successfully:", fileUri);
 
@@ -3983,10 +3994,10 @@ Rules:
 
 
       {/* Save / Update button */}
-      <div className="pt-2 flex justify-end">
+      <div className="pt-2 flex justify-end w-full">
         <button
           onClick={handleSaveMedication}
-          className="flex items-center px-6 py-3 bg-primary text-white font-semibold rounded-xl shadow-md shadow-primary/20 hover:bg-primary-dark hover:-translate-y-0.5 transition-all duration-200"
+          className="w-full sm:w-auto flex items-center justify-center px-6 py-3 bg-primary text-white font-semibold rounded-xl shadow-md shadow-primary/20 hover:bg-primary-dark hover:-translate-y-0.5 transition-all duration-200"
         >
           <Bell size={18} className="mr-2" />
           {editingMedId ? 'Update Medication' : 'Save Medication'}
@@ -4211,7 +4222,7 @@ Rules:
 
                           <button
                             onClick={() => handleDeleteMedication(item.medId)}
-                            className="p-2 rounded-lg hover:bg-red-50 dark:hover:bg-red-900/30 text-slate-300 hover:text-red-500 transition-colors opacity-0 group-hover:opacity-100"
+                            className="p-2 rounded-lg hover:bg-red-50 dark:hover:bg-red-900/30 text-slate-300 hover:text-red-500 transition-colors lg:opacity-0 lg:group-hover:opacity-100 opacity-100"
                             aria-label="Delete medication"
                           >
                             <Trash2 size={18} />
@@ -4239,7 +4250,7 @@ Rules:
                   <div key={med.id} className="p-4 bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-100 dark:border-slate-700 hover:border-primary/30 transition-colors group">
                     <div className="flex justify-between items-start mb-2">
                       <p className="font-bold text-text-main dark:text-white">{med.name}</p>
-                      <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                      <div className="flex items-center gap-1 lg:opacity-0 lg:group-hover:opacity-100 opacity-100 transition-opacity">
                         <button
                           onClick={() => handleEditMedication(med)}
                           className="text-slate-300 hover:text-primary transition-colors"
@@ -4284,317 +4295,278 @@ Rules:
     );
   };
 
-  const renderActivityTab = () => (
-    <div className="p-6 space-y-8 animate-fade-in">
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center border-b border-slate-100 dark:border-slate-700 pb-4">
-        <h2 className="text-2xl font-bold text-text-main dark:text-white flex items-center">
-          <Activity
-            size={28}
-            className="mr-3 text-primary cursor-pointer hover:opacity-80"
-            onClick={() =>
-              window.open("https://www.youtube.com/shorts/IQcq9lFWO6s", "_blank")
-            }
-          />
-          Activity Dashboard
-        </h2>
-        <div className="mt-4 md:mt-0 flex space-x-3">
-          <button
-            onClick={!isSyncingAll ? (() => { setIsAutoSyncActive(true); syncAll(); }) : undefined}
-            className={`px-5 py-2.5 bg-primary text-white font-semibold rounded-xl shadow-md shadow-primary/20 transition-all duration-200 flex items-center ${isSyncingAll ? "opacity-70 cursor-wait" : "hover:bg-primary-dark hover:-translate-y-0.5"}`}
-          >
-            <Activity size={18} className={`mr-2 ${isSyncingAll ? 'animate-spin' : ''}`} />
-            {isSyncingAll ? "Syncing..." : "Sync Data"}
-          </button>
-          <button
-            onClick={!isAssessmentLoading ? callAssessmentAPI : undefined}
-            className={`px-5 py-2.5 bg-secondary text-white font-semibold rounded-xl shadow-md shadow-secondary/20 transition-all duration-200 flex items-center ${isAssessmentLoading ? "opacity-70 cursor-wait" : "hover:bg-secondary-dark hover:-translate-y-0.5"}`}
-            disabled={
-              isAssessmentLoading ||
-              (stepCount ?? null) === null &&
-              (sleepHours ?? null) === null &&
-              (calories ?? null) === null &&
-              (distance ?? null) === null &&
-              (heartRate ?? null) === null
-            }
-          >
-            <MessageSquare size={18} className="mr-2" />
-            {isAssessmentLoading ? 'Analyzing...' : 'AI Insight'}
-          </button>
+  const renderActivityTab = () => {
+    const isMobile = window.innerWidth < 768;
+
+    const stepsCard = (
+      <div
+        onClick={() => scrollToGraph('steps')}
+        className="bg-white dark:bg-slate-800 p-4 md:p-6 rounded-3xl shadow-sm border border-slate-100 dark:border-slate-700 hover:shadow-md transition-shadow flex flex-col items-center justify-center relative overflow-hidden group cursor-pointer w-full h-full"
+      >
+        <div className="absolute top-0 right-0 w-24 h-24 bg-[#0F766E]/5 rounded-bl-full -mr-4 -mt-4 transition-transform group-hover:scale-110" />
+        <button
+          onClick={(e) => { e.stopPropagation(); setActiveInfoMetric('steps'); }}
+          className="absolute top-4 right-4 z-20 p-2 bg-white/50 dark:bg-black/20 hover:bg-white dark:hover:bg-slate-700 rounded-full backdrop-blur-sm transition-all text-primary/70 hover:text-primary"
+        >
+          <Info size={18} />
+        </button>
+        {stepCount !== null ? (
+          <>
+            <StepCompletionRing steps={stepCount} goal={DAILY_STEP_GOAL} size={isMobile ? 110 : 160} />
+            <div className="mt-2 text-center z-10">
+              <p className="text-2xl md:text-3xl font-bold text-text-main dark:text-white">{stepCount.toLocaleString()}</p>
+              <p className="text-xs md:text-sm text-text-muted dark:text-slate-400 font-medium">Steps Today</p>
+            </div>
+          </>
+        ) : (
+          <div className="text-center py-8 text-text-muted">
+            <Activity size={48} className="mx-auto mb-3 text-slate-300" />
+            <p>No step data</p>
+          </div>
+        )}
+      </div>
+    );
+
+    const sleepCard = (
+      <div
+        onClick={() => scrollToGraph('sleep')}
+        className="bg-white dark:bg-slate-800 p-4 md:p-6 rounded-3xl shadow-sm border border-slate-100 dark:border-slate-700 hover:shadow-md transition-shadow flex flex-col items-center justify-center relative overflow-hidden group cursor-pointer w-full h-full"
+      >
+        <div className="absolute top-0 right-0 w-24 h-24 bg-indigo-50 dark:bg-indigo-900/30 rounded-bl-full -mr-4 -mt-4 transition-transform group-hover:scale-110" />
+        <button
+          onClick={(e) => { e.stopPropagation(); setActiveInfoMetric('sleep'); }}
+          className="absolute top-4 right-4 z-20 p-2 bg-white/50 dark:bg-black/20 hover:bg-white dark:hover:bg-slate-700 rounded-full backdrop-blur-sm transition-all text-indigo-500/70 hover:text-indigo-500"
+        >
+          <Info size={18} />
+        </button>
+        {sleepHours !== null ? (
+          <>
+            <div className={`w-20 h-20 md:w-32 md:h-32 rounded-full flex items-center justify-center border-4 mb-2 md:mb-4 ${sleepHours < RECOMMENDED_SLEEP_HOURS ? 'border-secondary/30 bg-secondary/5 dark:bg-secondary/10' : 'border-green-100 dark:border-green-900/50 bg-green-50 dark:bg-green-900/20'}`}>
+              <Moon className={`${sleepHours < RECOMMENDED_SLEEP_HOURS ? 'text-secondary' : 'text-green-600'} w-8 h-8 md:w-12 md:h-12`} />
+            </div>
+            <div className="text-center z-10">
+              <p className="text-2xl md:text-4xl font-bold text-text-main dark:text-white">{sleepHours}<span className="text-sm md:text-xl text-text-muted dark:text-slate-400 ml-1">h</span></p>
+              <p className="text-xs md:text-sm text-text-muted dark:text-slate-400 font-medium">Sleep Duration</p>
+            </div>
+          </>
+        ) : (
+          <div className="text-center py-8 text-text-muted">
+            <Moon size={48} className="mx-auto mb-3 text-slate-300" />
+            <p>No sleep data</p>
+          </div>
+        )}
+      </div>
+    );
+
+    const caloriesCard = (
+      <div className="bg-white dark:bg-slate-800 p-4 md:p-6 rounded-3xl shadow-sm border border-slate-100 dark:border-slate-700 hover:shadow-md transition-shadow flex flex-col items-center justify-center relative overflow-hidden group w-full h-full">
+        <div className="absolute top-0 right-0 w-24 h-24 bg-orange-50 dark:bg-orange-900/30 rounded-bl-full -mr-4 -mt-4 transition-transform group-hover:scale-110" />
+        <button
+          onClick={(e) => { e.stopPropagation(); setActiveInfoMetric('calories'); }}
+          className="absolute top-4 right-4 z-20 p-2 bg-white/50 dark:bg-black/20 hover:bg-white dark:hover:bg-slate-700 rounded-full backdrop-blur-sm transition-all text-orange-500/70 hover:text-orange-500"
+        >
+          <Info size={18} />
+        </button>
+        {calories !== null ? (
+          <>
+            <div className="w-12 h-12 md:w-16 md:h-16 bg-orange-100 dark:bg-orange-900/40 rounded-2xl flex items-center justify-center mb-2 md:mb-4 text-orange-600 dark:text-orange-400">
+              <Activity className="w-6 h-6 md:w-8 md:h-8" />
+            </div>
+            <div className="text-center z-10">
+              <p className="text-2xl md:text-4xl font-bold text-text-main dark:text-white">{calories}</p>
+              <p className="text-xs md:text-sm text-text-muted dark:text-slate-400 font-medium">Calories Burned</p>
+            </div>
+          </>
+        ) : (
+          <div className="text-center py-8 text-text-muted">
+            <p>No calorie data</p>
+          </div>
+        )}
+      </div>
+    );
+
+    const hydrationCard = (
+      <div className="bg-white dark:bg-slate-800 p-4 md:p-6 rounded-3xl shadow-sm border border-slate-100 dark:border-slate-700 hover:shadow-md transition-shadow flex flex-col items-center justify-center relative overflow-hidden group w-full h-full">
+        <div className="absolute top-0 right-0 w-24 h-24 bg-cyan-50 dark:bg-cyan-900/30 rounded-bl-full -mr-4 -mt-4 transition-transform group-hover:scale-110" />
+        <button
+          onClick={(e) => { e.stopPropagation(); setActiveInfoMetric('hydration'); }}
+          className="absolute top-4 right-4 z-20 p-2 bg-white/50 dark:bg-black/20 hover:bg-white dark:hover:bg-slate-700 rounded-full backdrop-blur-sm transition-all text-cyan-500/70 hover:text-cyan-500"
+        >
+          <Info size={18} />
+        </button>
+
+        <div className="w-12 h-12 md:w-16 md:h-16 bg-cyan-100 dark:bg-cyan-900/40 rounded-2xl flex items-center justify-center mb-2 md:mb-4 text-cyan-600 dark:text-cyan-400">
+          <Droplet className="w-6 h-6 md:w-8 md:h-8" fill="currentColor" onClick={handleWaterIconClick} />
+        </div>
+
+        <div className="text-center z-10 w-full">
+          <p className="text-2xl md:text-4xl font-bold text-text-main dark:text-white">{hydration}<span className="text-sm md:text-xl text-text-muted dark:text-slate-400 ml-1">ml</span></p>
+          <p className="text-xs md:text-sm text-text-muted dark:text-slate-400 font-medium mb-2 md:mb-4">Water Intake</p>
+
+          {/* Progress Bar */}
+          <div className="w-full bg-slate-100 dark:bg-slate-700 rounded-full h-2 mb-2 md:mb-4 overflow-hidden">
+            <div
+              className="bg-cyan-500 h-2 rounded-full transition-all duration-500"
+              style={{ width: `${Math.min(100, (hydration / hydrationGoal) * 100)}%` }}
+            ></div>
+          </div>
+
+          <div className="flex items-center justify-center gap-2 md:gap-3">
+            <button
+              onClick={(e) => { e.stopPropagation(); updateHydration(-250); }}
+              className="p-1 md:p-2 rounded-xl bg-slate-100 dark:bg-slate-700 text-slate-500 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors"
+              disabled={hydration <= 0}
+            >
+              <Minus size={14} />
+            </button>
+            <button
+              onClick={(e) => { e.stopPropagation(); updateHydration(250); }}
+              className="flex items-center px-2 py-1 md:px-4 md:py-2 bg-cyan-500 dark:bg-cyan-700/80 text-white rounded-xl font-semibold shadow-md shadow-cyan-200 dark:shadow-cyan-900/20 hover:bg-cyan-600 dark:hover:bg-cyan-600/80 transition-colors text-xs md:text-sm"
+            >
+              <Plus size={12} className="mr-1" /> 250ml
+            </button>
+          </div>
         </div>
       </div>
+    );
 
-      {/* Metrics Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {/* Steps Card */}
-        <div
-          onClick={() => scrollToGraph('steps')}
-          className="bg-white dark:bg-slate-800 p-6 rounded-3xl shadow-sm border border-slate-100 dark:border-slate-700 hover:shadow-md transition-shadow flex flex-col items-center justify-center relative overflow-hidden group cursor-pointer"
+    const distanceCard = (
+      <div
+        onClick={() => scrollToGraph('distance')}
+        className="bg-white dark:bg-slate-800 p-4 md:p-6 rounded-3xl shadow-sm border border-slate-100 dark:border-slate-700 hover:shadow-md transition-shadow flex flex-col items-center justify-center relative overflow-hidden group cursor-pointer w-full h-full"
+      >
+        <div className="absolute top-0 right-0 w-24 h-24 bg-blue-50 dark:bg-blue-900/30 rounded-bl-full -mr-4 -mt-4 transition-transform group-hover:scale-110" />
+
+        <button
+          onClick={(e) => { e.stopPropagation(); setActiveInfoMetric('distance'); }}
+          className="absolute top-4 right-4 z-20 p-2 bg-white/50 dark:bg-black/20 hover:bg-white dark:hover:bg-slate-700 rounded-full backdrop-blur-sm transition-all text-blue-500/70 hover:text-blue-500"
         >
-          <div className="absolute top-0 right-0 w-24 h-24 bg-[#0F766E]/5 rounded-bl-full -mr-4 -mt-4 transition-transform group-hover:scale-110" />
-          <button
-            onClick={(e) => { e.stopPropagation(); setActiveInfoMetric('steps'); }}
-            className="absolute top-4 right-4 z-20 p-2 bg-white/50 dark:bg-black/20 hover:bg-white dark:hover:bg-slate-700 rounded-full backdrop-blur-sm transition-all text-primary/70 hover:text-primary"
-          >
-            <Info size={18} />
-          </button>
-          {stepCount !== null ? (
-            <>
-              <StepCompletionRing steps={stepCount} goal={DAILY_STEP_GOAL} size={160} />
-              <div className="mt-2 text-center z-10">
-                <p className="text-3xl font-bold text-text-main dark:text-white">{stepCount.toLocaleString()}</p>
-                <p className="text-sm text-text-muted dark:text-slate-400 font-medium">Steps Today</p>
-              </div>
-            </>
-          ) : (
-            <div className="text-center py-8 text-text-muted">
-              <Activity size={48} className="mx-auto mb-3 text-slate-300" />
-              <p>No step data</p>
-            </div>
-          )}
-        </div>
+          <Info size={18} />
+        </button>
 
-        {/* Sleep Card */}
-        <div
-          onClick={() => scrollToGraph('sleep')}
-          className="bg-white dark:bg-slate-800 p-6 rounded-3xl shadow-sm border border-slate-100 dark:border-slate-700 hover:shadow-md transition-shadow flex flex-col items-center justify-center relative overflow-hidden group cursor-pointer"
+        {distance !== null ? (
+          <>
+            <div className="w-12 h-12 md:w-16 md:h-16 bg-blue-100 dark:bg-blue-900/40 rounded-2xl flex items-center justify-center mb-2 md:mb-4 text-blue-600 dark:text-blue-400">
+              <Activity className="w-6 h-6 md:w-8 md:h-8" />
+            </div>
+            <div className="text-center z-10">
+              <p className="text-2xl md:text-4xl font-bold text-text-main dark:text-white">{distance}<span className="text-sm md:text-xl text-text-muted dark:text-slate-400 ml-1">km</span></p>
+              <p className="text-xs md:text-sm text-text-muted dark:text-slate-400 font-medium">Distance</p>
+            </div>
+          </>
+        ) : (
+          <div className="text-center py-8 text-text-muted">
+            <p>No distance data</p>
+          </div>
+        )}
+      </div>
+    );
+
+    const heartRateCard = (
+      <div
+        onClick={() => scrollToGraph('heartRate')}
+        className="bg-white dark:bg-slate-800 p-4 md:p-6 rounded-3xl shadow-sm border border-slate-100 dark:border-slate-700 hover:shadow-md transition-shadow flex flex-col items-center justify-center relative overflow-hidden group cursor-pointer w-full h-full"
+      >
+        <div className="absolute top-0 right-0 w-24 h-24 bg-red-50 dark:bg-red-900/30 rounded-bl-full -mr-4 -mt-4 transition-transform group-hover:scale-110" />
+
+        <button
+          onClick={(e) => { e.stopPropagation(); setActiveInfoMetric('heartRate'); }}
+          className="absolute top-4 right-4 z-20 p-2 bg-white/50 dark:bg-black/20 hover:bg-white dark:hover:bg-slate-700 rounded-full backdrop-blur-sm transition-all text-red-500/70 hover:text-red-500"
         >
-          <div className="absolute top-0 right-0 w-24 h-24 bg-indigo-50 dark:bg-indigo-900/30 rounded-bl-full -mr-4 -mt-4 transition-transform group-hover:scale-110" />
-          <button
-            onClick={(e) => { e.stopPropagation(); setActiveInfoMetric('sleep'); }}
-            className="absolute top-4 right-4 z-20 p-2 bg-white/50 dark:bg-black/20 hover:bg-white dark:hover:bg-slate-700 rounded-full backdrop-blur-sm transition-all text-indigo-500/70 hover:text-indigo-500"
-          >
-            <Info size={18} />
-          </button>
-          {sleepHours !== null ? (
-            <>
-              <div className={`w-32 h-32 rounded-full flex items-center justify-center border-4 mb-4 ${sleepHours < RECOMMENDED_SLEEP_HOURS ? 'border-secondary/30 bg-secondary/5 dark:bg-secondary/10' : 'border-green-100 dark:border-green-900/50 bg-green-50 dark:bg-green-900/20'}`}>
-                <Moon size={32} className={sleepHours < RECOMMENDED_SLEEP_HOURS ? 'text-secondary' : 'text-green-600'} />
-              </div>
-              <div className="text-center z-10">
-                <p className="text-4xl font-bold text-text-main dark:text-white">{sleepHours}<span className="text-xl text-text-muted dark:text-slate-400 ml-1">h</span></p>
-                <p className="text-sm text-text-muted dark:text-slate-400 font-medium">Sleep Duration</p>
-              </div>
-            </>
-          ) : (
-            <div className="text-center py-8 text-text-muted">
-              <Moon size={48} className="mx-auto mb-3 text-slate-300" />
-              <p>No sleep data</p>
+          <Info size={18} />
+        </button>
+
+        {heartRate !== null ? (
+          <>
+            <div className="w-12 h-12 md:w-16 md:h-16 bg-red-100 dark:bg-red-900/40 rounded-2xl flex items-center justify-center mb-2 md:mb-4 text-red-600 dark:text-red-400 animate-pulse">
+              <Heart className="w-6 h-6 md:w-8 md:h-8" fill="currentColor" />
             </div>
-          )}
-        </div>
-
-        {/* Calories Card */}
-        <div className="bg-white dark:bg-slate-800 p-6 rounded-3xl shadow-sm border border-slate-100 dark:border-slate-700 hover:shadow-md transition-shadow flex flex-col items-center justify-center relative overflow-hidden group">
-          <div className="absolute top-0 right-0 w-24 h-24 bg-orange-50 dark:bg-orange-900/30 rounded-bl-full -mr-4 -mt-4 transition-transform group-hover:scale-110" />
-          <button
-            onClick={(e) => { e.stopPropagation(); setActiveInfoMetric('calories'); }}
-            className="absolute top-4 right-4 z-20 p-2 bg-white/50 dark:bg-black/20 hover:bg-white dark:hover:bg-slate-700 rounded-full backdrop-blur-sm transition-all text-orange-500/70 hover:text-orange-500"
-          >
-            <Info size={18} />
-          </button>
-          {calories !== null ? (
-            <>
-              <div className="w-16 h-16 bg-orange-100 dark:bg-orange-900/40 rounded-2xl flex items-center justify-center mb-4 text-orange-600 dark:text-orange-400">
-                <Activity size={32} />
-              </div>
-              <div className="text-center z-10">
-                <p className="text-4xl font-bold text-text-main dark:text-white">{calories}</p>
-                <p className="text-sm text-text-muted dark:text-slate-400 font-medium">Calories Burned</p>
-              </div>
-            </>
-          ) : (
-            <div className="text-center py-8 text-text-muted">
-              <p>No calorie data</p>
+            <div className="text-center z-10">
+              <p className="text-2xl md:text-4xl font-bold text-text-main dark:text-white">{heartRate}<span className="text-sm md:text-xl text-text-muted dark:text-slate-400 ml-1">bpm</span></p>
+              <p className="text-xs md:text-sm text-text-muted dark:text-slate-400 font-medium">Heart Rate</p>
             </div>
-          )}
-        </div>
+          </>
+        ) : (
+          <div className="text-center py-8 text-text-muted">
+            <Heart size={48} className="mx-auto mb-3 text-slate-300" />
+            <p>No heart rate data</p>
+          </div>
+        )}
+      </div>
+    );
 
-
-        {/* Hydration Card */}
-        <div className="bg-white dark:bg-slate-800 p-6 rounded-3xl shadow-sm border border-slate-100 dark:border-slate-700 hover:shadow-md transition-shadow flex flex-col items-center justify-center relative overflow-hidden group">
-          <div className="absolute top-0 right-0 w-24 h-24 bg-cyan-50 dark:bg-cyan-900/30 rounded-bl-full -mr-4 -mt-4 transition-transform group-hover:scale-110" />
-          <button
-            onClick={(e) => { e.stopPropagation(); setActiveInfoMetric('hydration'); }}
-            className="absolute top-4 right-4 z-20 p-2 bg-white/50 dark:bg-black/20 hover:bg-white dark:hover:bg-slate-700 rounded-full backdrop-blur-sm transition-all text-cyan-500/70 hover:text-cyan-500"
-          >
-            <Info size={18} />
-          </button>
-
-          <div className="w-16 h-16 bg-cyan-100 dark:bg-cyan-900/40 rounded-2xl flex items-center justify-center mb-4 text-cyan-600 dark:text-cyan-400">
-            <Droplet size={32} fill="currentColor" onClick={handleWaterIconClick} />
+    const healthScoreCard = (
+      <div className="bg-white dark:bg-slate-800 p-4 md:p-10 rounded-3xl shadow-sm border border-slate-100 dark:border-slate-700 hover:shadow-md transition-shadow w-full flex justify-center h-full">
+        <div className="flex flex-col md:flex-row items-center justify-center gap-6 md:gap-16 max-w-3xl w-full">
+          <div className="flex-shrink-0">
+            <HealthScoreRing score={healthScore ?? 0} size={isMobile ? 130 : 180} />
           </div>
 
-          <div className="text-center z-10 w-full">
-            <p className="text-4xl font-bold text-text-main dark:text-white">{hydration}<span className="text-xl text-text-muted dark:text-slate-400 ml-1">ml</span></p>
-            <p className="text-sm text-text-muted dark:text-slate-400 font-medium mb-4">Water Intake</p>
+          <div className="flex flex-col space-y-4 md:space-y-6 text-left">
+            {healthScoreExplanation.length > 0 && (
+              <div>
+                <p className="font-semibold text-text-main dark:text-white text-base md:text-lg mb-2">Why this score:</p>
+                <ul className="space-y-1 text-text-muted dark:text-slate-400 text-xs md:text-sm">
+                  {healthScoreExplanation.map((line, idx) => (
+                    <li key={idx} className="flex items-start gap-2">
+                      <span className="text-lg leading-none">•</span>
+                      <span>{line}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
 
-            {/* Progress Bar */}
-            <div className="w-full bg-slate-100 rounded-full h-2.5 mb-4 overflow-hidden">
-              <div
-                className="bg-cyan-500 h-2.5 rounded-full transition-all duration-500"
-                style={{ width: `${Math.min(100, (hydration / hydrationGoal) * 100)}%` }}
-              ></div>
-            </div>
-
-            <div className="flex items-center justify-center gap-3">
-              <button
-                onClick={(e) => { e.stopPropagation(); updateHydration(-250); }}
-                className="p-2 rounded-xl bg-slate-100 dark:bg-slate-700 text-slate-500 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors"
-                disabled={hydration <= 0}
-              >
-                <Minus size={18} />
-              </button>
-              <button
-                onClick={(e) => { e.stopPropagation(); updateHydration(250); }}
-                className="flex items-center px-4 py-2 bg-cyan-500 dark:bg-cyan-700/80 text-white rounded-xl font-semibold shadow-md shadow-cyan-200 dark:shadow-cyan-900/20 hover:bg-cyan-600 dark:hover:bg-cyan-600/80 transition-colors"
-              >
-                <Plus size={16} className="mr-1" /> 250ml
-              </button>
-            </div>
+            {healthScoreSuggestions.length > 0 && (
+              <div>
+                <p className="font-semibold text-text-main dark:text-white text-base md:text-lg mb-2">How to improve:</p>
+                <ul className="space-y-1 text-text-muted dark:text-slate-400 text-xs md:text-sm">
+                  {healthScoreSuggestions.map((line, idx) => (
+                    <li key={idx} className="flex items-start gap-2">
+                      <span className="text-lg leading-none">•</span>
+                      <span>{line}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
           </div>
-        </div>
-
-        {/* Distance Card */}
-        <div
-          onClick={() => scrollToGraph('distance')}
-          className="bg-white dark:bg-slate-800 p-6 rounded-3xl shadow-sm border border-slate-100 dark:border-slate-700 hover:shadow-md transition-shadow flex flex-col items-center justify-center relative overflow-hidden group cursor-pointer"
-        >
-          <div className="absolute top-0 right-0 w-24 h-24 bg-blue-50 dark:bg-blue-900/30 rounded-bl-full -mr-4 -mt-4 transition-transform group-hover:scale-110" />
-
-          <button
-            onClick={(e) => { e.stopPropagation(); setActiveInfoMetric('distance'); }}
-            className="absolute top-4 right-4 z-20 p-2 bg-white/50 dark:bg-black/20 hover:bg-white dark:hover:bg-slate-700 rounded-full backdrop-blur-sm transition-all text-blue-500/70 hover:text-blue-500"
-          >
-            <Info size={18} />
-          </button>
-
-          {distance !== null ? (
-            <>
-              <div className="w-16 h-16 bg-blue-100 dark:bg-blue-900/40 rounded-2xl flex items-center justify-center mb-4 text-blue-600 dark:text-blue-400">
-                <Activity size={32} />
-              </div>
-              <div className="text-center z-10">
-                <p className="text-4xl font-bold text-text-main dark:text-white">{distance}<span className="text-xl text-text-muted dark:text-slate-400 ml-1">km</span></p>
-                <p className="text-sm text-text-muted dark:text-slate-400 font-medium">Distance</p>
-              </div>
-            </>
-          ) : (
-            <div className="text-center py-8 text-text-muted">
-              <p>No distance data</p>
-            </div>
-          )}
-        </div>
-
-        {/* Heart Rate Card */}
-        <div
-          onClick={() => scrollToGraph('heartRate')}
-          className="bg-white dark:bg-slate-800 p-6 rounded-3xl shadow-sm border border-slate-100 dark:border-slate-700 hover:shadow-md transition-shadow flex flex-col items-center justify-center relative overflow-hidden group cursor-pointer"
-        >
-          <div className="absolute top-0 right-0 w-24 h-24 bg-red-50 dark:bg-red-900/30 rounded-bl-full -mr-4 -mt-4 transition-transform group-hover:scale-110" />
-
-          <button
-            onClick={(e) => { e.stopPropagation(); setActiveInfoMetric('heartRate'); }}
-            className="absolute top-4 right-4 z-20 p-2 bg-white/50 dark:bg-black/20 hover:bg-white dark:hover:bg-slate-700 rounded-full backdrop-blur-sm transition-all text-red-500/70 hover:text-red-500"
-          >
-            <Info size={18} />
-          </button>
-
-          {heartRate !== null ? (
-            <>
-              <div className="w-16 h-16 bg-red-100 dark:bg-red-900/40 rounded-2xl flex items-center justify-center mb-4 text-red-600 dark:text-red-400 animate-pulse">
-                <Heart size={32} fill="currentColor" />
-              </div>
-              <div className="text-center z-10">
-                <p className="text-4xl font-bold text-text-main dark:text-white">{heartRate}<span className="text-xl text-text-muted dark:text-slate-400 ml-1">bpm</span></p>
-                <p className="text-sm text-text-muted dark:text-slate-400 font-medium">Heart Rate</p>
-              </div>
-            </>
-          ) : (
-            <div className="text-center py-8 text-text-muted">
-              <Heart size={48} className="mx-auto mb-3 text-slate-300" />
-              <p>No heart rate data</p>
-            </div>
-          )}
         </div>
       </div>
-      {/* Health Score + BMI Row */}
-      <div className="grid grid-cols-1 xl:grid-cols-[2fr,1.2fr] gap-6 items-stretch">
-        {/* Health Score Card (left) */}
-        <div className="bg-white dark:bg-slate-800 p-10 rounded-3xl shadow-sm border border-slate-100 dark:border-slate-700 hover:shadow-md transition-shadow w-full flex justify-center">
-          {/* CENTERED ROW WRAPPER */}
-          <div className="flex flex-row items-center justify-center gap-16 max-w-3xl w-full">
-            {/* LEFT — RING */}
-            <div className="flex-shrink-0">
-              <HealthScoreRing score={healthScore ?? 0} />
-            </div>
+    );
 
-            {/* RIGHT — TEXT */}
-            <div className="flex flex-col space-y-6 text-left">
-              {/* WHY THIS SCORE */}
-              {healthScoreExplanation.length > 0 && (
-                <div>
-                  <p className="font-semibold text-text-main dark:text-white text-lg mb-2">Why this score:</p>
-                  <ul className="space-y-1 text-text-muted dark:text-slate-400 text-sm">
-                    {healthScoreExplanation.map((line, idx) => (
-                      <li key={idx} className="flex items-start gap-2">
-                        <span className="text-lg">•</span>
-                        <span>{line}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              )}
+    const bmiCard = (
+      <div className="bg-gradient-to-br from-slate-50 via-slate-100 to-slate-200 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 rounded-3xl border border-slate-200 dark:border-slate-700 shadow-sm flex flex-col items-center justify-center px-4 py-6 md:px-6 md:py-8 w-full h-full">
+        <h3 className="text-base md:text-lg font-semibold text-text-main dark:text-slate-100 mb-2 md:mb-4 self-start">
+          BMI Overview
+        </h3>
 
-              {/* HOW TO IMPROVE */}
-              {healthScoreSuggestions.length > 0 && (
-                <div>
-                  <p className="font-semibold text-text-main dark:text-white text-lg mb-2">How to improve:</p>
-                  <ul className="space-y-1 text-text-muted dark:text-slate-400 text-sm">
-                    {healthScoreSuggestions.map((line, idx) => (
-                      <li key={idx} className="flex items-start gap-2">
-                        <span className="text-lg">•</span>
-                        <span>{line}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              )}
-            </div>
-          </div>
-        </div>
-
-        {/* BMI Card (right) */}
-        <div className="bg-gradient-to-br from-slate-50 via-slate-100 to-slate-200 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 rounded-3xl border border-slate-200 dark:border-slate-700 shadow-sm flex flex-col items-center justify-center px-6 py-8">
-          <h3 className="text-lg font-semibold text-text-main dark:text-slate-100 mb-4 self-start">
-            BMI Overview
-          </h3>
-
-          {bmi ? (
-            <>
-              <BMIGauge bmi={bmi} theme={theme} colorBlindMode={colorBlindMode} />
-              <p className="mt-1 text-[11px] text-slate-400 text-center">
-                BMI is estimated from the height and weight in your profile.
-              </p>
-            </>
-          ) : (
-            <p className="text-sm text-slate-300 text-center">
-              Add your height and weight in the Profile section to see your BMI gauge here.
+        {bmi ? (
+          <>
+            <BMIGauge bmi={bmi} theme={theme} colorBlindMode={colorBlindMode} />
+            <p className="mt-1 text-[10px] md:text-[11px] text-slate-400 text-center">
+              BMI is estimated from height and weight in your profile.
             </p>
-          )}
-        </div>
+          </>
+        ) : (
+          <p className="text-xs md:text-sm text-slate-400 text-center py-4">
+            Add height and weight in Profile to see BMI here.
+          </p>
+        )}
       </div>
+    );
 
-      {/* Charts Section */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mt-8">
-        <div ref={heartRateRef} className={`bg-white dark:bg-slate-800 p-6 rounded-3xl shadow-sm border border-slate-100 dark:border-slate-700 ${highlightedGraph === 'heartRate' ? 'glow-red' : ''}`}>
-          <h3 className="text-lg font-bold text-text-main dark:text-white mb-6 flex items-center">
-            <Heart size={25} className="mr-2 text-secondary" /> Heart Rate Trend
-          </h3>
+    const chartHeartRate = (
+      <div ref={heartRateRef} className={`bg-white dark:bg-slate-800 p-4 md:p-6 rounded-3xl shadow-sm border border-slate-100 dark:border-slate-700 ${highlightedGraph === 'heartRate' ? 'glow-red' : ''}`}>
+        <h3 className="text-base md:text-lg font-bold text-text-main dark:text-white mb-4 md:mb-6 flex items-center">
+          <Heart size={22} className="mr-2 text-secondary" /> Heart Rate Trend
+        </h3>
+        {Array.isArray(heartRateTrend) && heartRateTrend.length > 0 ? (
           <ResponsiveContainer width="100%" height={250}>
             <LineChart data={heartRateTrend}>
               <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
-              <XAxis dataKey="time" stroke="#94a3b8" fontSize={12} tickLine={false} axisLine={false} />
-              <YAxis stroke="#94a3b8" fontSize={12} tickLine={false} axisLine={false} />
+              <XAxis dataKey="time" stroke="#94a3b8" fontSize={11} tickLine={false} axisLine={false} />
+              <YAxis stroke="#94a3b8" fontSize={11} tickLine={false} axisLine={false} />
               <Tooltip
                 contentStyle={{
                   backgroundColor: '#fff',
@@ -4602,50 +4574,54 @@ Rules:
                   border: 'none',
                   boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)'
                 }}
-                labelStyle={{ color: 'black' }}       // <-- TOP TEXT (time)
-                itemStyle={{ color: '#0F766E' }}      // <-- bpm:72 stays green
+                labelStyle={{ color: 'black' }}
+                itemStyle={{ color: '#0F766E' }}
               />
               <Line type="monotone" dataKey="bpm" stroke="#FB7185" strokeWidth={3} dot={{ r: 4, fill: '#FB7185', strokeWidth: 0 }} activeDot={{ r: 6 }} />
             </LineChart>
           </ResponsiveContainer>
-        </div>
+        ) : (
+          <div className="flex flex-col items-center justify-center py-12 text-text-muted dark:text-slate-400">
+            <Heart size={32} className="mb-3 opacity-30" />
+            <p className="text-sm font-medium">No heart rate data available</p>
+            <p className="text-xs mt-1 opacity-60">Sync your device to see trends</p>
+          </div>
+        )}
+      </div>
+    );
 
-        <div ref={stepsRef} className={`bg-white dark:bg-slate-800 p-6 rounded-3xl shadow-sm border border-slate-100 dark:border-slate-700 ${highlightedGraph === 'steps' ? 'glow-teal' : ''}`}>
-          <h3 className="text-lg font-bold text-text-main dark:text-white mb-6 flex items-center">
-            <Footprints
-              size={25}
-              color="#0F766E"
-              className="mr-2 text-secondary cursor-pointer hover:opacity-80"
-              onClick={() => {
-                setStepsIconClicks(prev => {
-                  const next = prev + 1;
-
-                  if (next === 7) {
-                    window.open("https://www.youtube.com/shorts/W6oQUDFV2C0", "_blank");
-                    return 0; // reset after trigger
-                  }
-
-                  return next;
-                });
-              }}
-            />
-            Steps Trend
-          </h3>
+    const chartSteps = (
+      <div ref={stepsRef} className={`bg-white dark:bg-slate-800 p-4 md:p-6 rounded-3xl shadow-sm border border-slate-100 dark:border-slate-700 ${highlightedGraph === 'steps' ? 'glow-teal' : ''}`}>
+        <h3 className="text-base md:text-lg font-bold text-text-main dark:text-white mb-4 md:mb-6 flex items-center">
+          <Footprints
+            size={22}
+            color="#0F766E"
+            className="mr-2 text-secondary cursor-pointer hover:opacity-80"
+            onClick={() => {
+              setStepsIconClicks(prev => {
+                const next = prev + 1;
+                if (next === 7) {
+                  window.open("https://www.youtube.com/shorts/W6oQUDFV2C0", "_blank");
+                  return 0;
+                }
+                return next;
+              });
+            }}
+          />
+          Steps Trend
+        </h3>
+        {Array.isArray(steps3hTrend) && steps3hTrend.length > 0 ? (
           <ResponsiveContainer width="100%" height={250}>
             <LineChart data={steps3hTrend}>
-
               <defs>
                 <linearGradient id="stepsGradientFill" x1="0" y1="0" x2="0" y2="1">
                   <stop offset="0%" stopColor="#0F766E" stopOpacity={0.35} />
                   <stop offset="100%" stopColor="#0F766E" stopOpacity={0} />
                 </linearGradient>
               </defs>
-
-              <CartesianGrid strokeDasharray="3 3" stroke="#a1a3a4ff" />
-
-              <XAxis dataKey="time" stroke="#94a3b8" tickLine={false} axisLine={false} fontSize={12} />
-              <YAxis stroke="#94a3b8" tickLine={false} axisLine={false} fontSize={12} />
-
+              <CartesianGrid strokeDasharray="3 3" stroke="#a1a3a4" />
+              <XAxis dataKey="time" stroke="#94a3b8" tickLine={false} axisLine={false} fontSize={11} />
+              <YAxis stroke="#94a3b8" tickLine={false} axisLine={false} fontSize={11} />
               <Tooltip
                 formatter={(value, name) => {
                   if (name === "steps") return [`${value} steps`, "Steps"];
@@ -4658,65 +4634,42 @@ Rules:
                   boxShadow: "0 8px 24px rgba(0,0,0,0.06)"
                 }}
                 labelStyle={{
-                  color: "black",        // <-- top text (time)
+                  color: "black",
                   fontWeight: 600
                 }}
                 itemStyle={{
-                  color: "#0F766E"       // <-- lower text (Steps: ####)
+                  color: "#0F766E"
                 }}
               />
-
-              {/* MAIN LINE */}
-              <Line
-                type="monotone"
-                dataKey="steps"
-                stroke="#0F766E"
-                strokeWidth={4}
-                dot={false}
-              />
-
-              {/* GRADIENT FILL UNDER LINE */}
-              <Area
-                type="monotone"
-                dataKey="stepsArea"
-                stroke="none"
-                fill="url(#stepsGradientFill)"
-                fillOpacity={1}
-              />
-
+              <Line type="monotone" dataKey="steps" stroke="#0F766E" strokeWidth={4} dot={false} />
+              <Area type="monotone" dataKey="stepsArea" stroke="none" fill="url(#stepsGradientFill)" fillOpacity={1} />
             </LineChart>
           </ResponsiveContainer>
+        ) : (
+          <div className="flex flex-col items-center justify-center py-12 text-text-muted dark:text-slate-400">
+            <Footprints size={32} className="mb-3 opacity-30" />
+            <p className="text-sm font-medium">No steps data available</p>
+            <p className="text-xs mt-1 opacity-60">Sync your device to see trends</p>
+          </div>
+        )}
+      </div>
+    );
 
-        </div>
-        <div ref={distanceRef} className={`relative bg-white dark:bg-slate-800 p-6 rounded-3xl shadow-sm border border-slate-100 dark:border-slate-700 
-                hover:shadow-md transition-shadow overflow-hidden ${highlightedGraph === 'distance' ? 'glow-blue' : ''}`}>
-
-          <h3 className="text-lg font-bold text-text-main dark:text-white mb-6 flex items-center">
-            <Ruler size={25} color='#14b8a6' className="mr-2 text-secondary" />Distance Trend
-          </h3>
-
+    const chartDistance = (
+      <div ref={distanceRef} className={`relative bg-white dark:bg-slate-800 p-4 md:p-6 rounded-3xl shadow-sm border border-slate-100 dark:border-slate-700 hover:shadow-md transition-shadow overflow-hidden ${highlightedGraph === 'distance' ? 'glow-blue' : ''}`}>
+        <h3 className="text-base md:text-lg font-bold text-text-main dark:text-white mb-4 md:mb-6 flex items-center">
+          <Ruler size={22} color='#14b8a6' className="mr-2 text-secondary" />Distance Trend
+        </h3>
+        {Array.isArray(weeklyDistance) && weeklyDistance.length > 0 ? (
           <ResponsiveContainer width="100%" height={260}>
             <BarChart
               data={weeklyDistance}
-              barSize={36}
+              barSize={isMobile ? 14 : 28}
               margin={{ top: 20, right: 10, left: -10, bottom: 5 }}
             >
               <CartesianGrid strokeDasharray="3 3" vertical={false} />
-
-              <XAxis
-                dataKey="day"
-                tick={{ fill: "#64748b", fontSize: 12, fontWeight: 500 }}
-                axisLine={false}
-                tickLine={false}
-              />
-
-              <YAxis
-                tick={{ fill: "#94a3b8", fontSize: 12 }}
-                axisLine={false}
-                tickLine={false}
-                unit=" km"
-              />
-
+              <XAxis dataKey="day" tick={{ fill: "#64748b", fontSize: 11, fontWeight: 500 }} axisLine={false} tickLine={false} />
+              <YAxis tick={{ fill: "#94a3b8", fontSize: 11 }} axisLine={false} tickLine={false} unit=" km" />
               <Tooltip
                 cursor={{ fill: "rgba(20,184,166,0.08)" }}
                 contentStyle={{
@@ -4728,36 +4681,30 @@ Rules:
                 labelStyle={{ fontWeight: 600, color: "#000000" }}
                 formatter={(value) => [`${value} km`, "Distance"]}
               />
-
-              <Bar
-                dataKey="km"
-                radius={[10, 10, 0, 0]}
-                fill="#14b8a6"
-              />
+              <Bar dataKey="km" radius={[6, 6, 0, 0]} fill="#14b8a6" />
             </BarChart>
           </ResponsiveContainer>
-        </div>
+        ) : (
+          <div className="flex flex-col items-center justify-center py-12 text-text-muted dark:text-slate-400">
+            <Ruler size={32} className="mb-3 opacity-30" />
+            <p className="text-sm font-medium">No distance data available</p>
+            <p className="text-xs mt-1 opacity-60">Sync your device to see trends</p>
+          </div>
+        )}
+      </div>
+    );
 
-        <div ref={sleepRef} className={`bg-white dark:bg-slate-800 p-6 rounded-3xl shadow-sm border border-slate-100 dark:border-slate-700 ${highlightedGraph === 'sleep' ? 'glow-indigo' : ''}`}>
-          <h3 className="text-lg font-bold text-text-main dark:text-white mb-6 flex items-center">
-            <Moon size={25} color="#6366F1" className="mr-2 text-secondary" />Sleep Trend</h3>
+    const chartSleep = (
+      <div ref={sleepRef} className={`bg-white dark:bg-slate-800 p-4 md:p-6 rounded-3xl shadow-sm border border-slate-100 dark:border-slate-700 ${highlightedGraph === 'sleep' ? 'glow-indigo' : ''}`}>
+        <h3 className="text-base md:text-lg font-bold text-text-main dark:text-white mb-4 md:mb-6 flex items-center">
+          <Moon size={22} color="#6366F1" className="mr-2 text-secondary" />Sleep Trend
+        </h3>
+        {Array.isArray(sleepTrend) && sleepTrend.length > 0 ? (
           <ResponsiveContainer width="100%" height={250}>
-            <BarChart data={sleepTrend}>
+            <BarChart data={sleepTrend} barSize={isMobile ? 16 : 32}>
               <CartesianGrid strokeDasharray="3 3" vertical={false} />
-              <XAxis
-                dataKey="name"
-                tick={{ fill: "#64748b", fontSize: 12, fontWeight: 500 }}
-                axisLine={false}
-                tickLine={false}
-              />
-              <YAxis
-                domain={[0, 12]}
-                ticks={[0, 3, 6, 9, 12]}
-                tick={{ fill: "#94a3b8", fontSize: 12 }}
-                axisLine={false}
-                tickLine={false}
-                unit=" hrs"
-                stroke="#E2E8F0" />
+              <XAxis dataKey="name" tick={{ fill: "#64748b", fontSize: 11, fontWeight: 500 }} axisLine={false} tickLine={false} />
+              <YAxis domain={[0, 12]} ticks={[0, 3, 6, 9, 12]} tick={{ fill: "#94a3b8", fontSize: 11 }} axisLine={false} tickLine={false} unit=" hrs" stroke="#E2E8F0" />
               <Tooltip
                 cursor={{ fill: "rgba(20,184,166,0.08)" }}
                 contentStyle={{
@@ -4769,37 +4716,144 @@ Rules:
                 labelStyle={{ fontWeight: 600, color: "#000000" }}
                 formatter={(value) => [`${value} hrs`, "Sleep"]}
               />
-              <Bar
-                dataKey="hours"
-                radius={[10, 10, 0, 0]}
-                fill="#6366F1"
-                barSize={40} />
+              <Bar dataKey="hours" radius={[6, 6, 0, 0]} fill="#6366F1" />
             </BarChart>
           </ResponsiveContainer>
-        </div>
+        ) : (
+          <div className="flex flex-col items-center justify-center py-12 text-text-muted dark:text-slate-400">
+            <Moon size={32} className="mb-3 opacity-30" />
+            <p className="text-sm font-medium">No sleep data available</p>
+            <p className="text-xs mt-1 opacity-60">Sync your device to see trends</p>
+          </div>
+        )}
       </div>
+    );
 
-      {/* AI Assessment Report */}
-      {
-        (isAssessmentLoading || assessmentResult) && (
-          <div className="mt-8 bg-white dark:bg-slate-800 p-8 rounded-3xl shadow-lg border border-slate-100 dark:border-slate-700 animate-slide-up">
-            <h3 className="text-2xl font-bold flex items-center mb-6 text-text-main">
-              <div className="w-10 h-10 bg-secondary/10 rounded-xl flex items-center justify-center mr-3">
-                <MessageSquare size={20} className="text-secondary" />
+    return (
+      <div className="p-4 md:p-6 space-y-6 md:space-y-8 animate-fade-in pb-20 lg:pb-6">
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-center border-b border-slate-100 dark:border-slate-700 pb-4 gap-4 w-full">
+          <h2 className="text-xl md:text-2xl font-bold text-text-main dark:text-white flex items-center">
+            <Activity
+              size={28}
+              className="mr-3 text-primary cursor-pointer hover:opacity-80"
+              onClick={() => window.open("https://www.youtube.com/shorts/IQcq9lFWO6s", "_blank")}
+            />
+            Activity Dashboard
+          </h2>
+          <div className="flex space-x-3 w-full md:w-auto">
+            <button
+              onClick={!isSyncingAll ? (() => { setIsAutoSyncActive(true); syncAll(); }) : undefined}
+              className={`flex-1 md:flex-none justify-center px-4 py-2.5 bg-primary text-white font-semibold rounded-xl shadow-md shadow-primary/20 transition-all duration-200 flex items-center text-sm ${isSyncingAll ? "opacity-70 cursor-wait" : "hover:bg-primary-dark hover:-translate-y-0.5"}`}
+            >
+              <Activity size={16} className={`mr-2 ${isSyncingAll ? 'animate-spin' : ''}`} />
+              {isSyncingAll ? "Syncing..." : "Sync Data"}
+            </button>
+            <button
+              onClick={!isAssessmentLoading ? callAssessmentAPI : undefined}
+              className={`flex-1 md:flex-none justify-center px-4 py-2.5 bg-secondary text-white font-semibold rounded-xl shadow-md shadow-secondary/20 transition-all duration-200 flex items-center text-sm ${isAssessmentLoading ? "opacity-70 cursor-wait" : "hover:bg-secondary-dark hover:-translate-y-0.5"}`}
+              disabled={isAssessmentLoading || (stepCount ?? null) === null && (sleepHours ?? null) === null && (calories ?? null) === null && (distance ?? null) === null && (heartRate ?? null) === null}
+            >
+              <MessageSquare size={16} className="mr-2" />
+              {isAssessmentLoading ? 'Analyzing...' : 'AI Insight'}
+            </button>
+          </div>
+        </div>
+
+        {/* Desktop / Tablet View (Shown on screens >= md) */}
+        {!isMobileViewport && (
+          <div className="space-y-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 items-stretch">
+              {stepsCard}
+              {sleepCard}
+              {caloriesCard}
+              {hydrationCard}
+              {distanceCard}
+              {heartRateCard}
+            </div>
+
+            <div className="grid grid-cols-1 xl:grid-cols-[2fr,1.2fr] gap-6 items-stretch">
+              {healthScoreCard}
+              {bmiCard}
+            </div>
+
+            <div className="grid grid-cols-1 gap-8 mt-8">
+              {chartHeartRate}
+              {chartSteps}
+              {chartDistance}
+              {chartSleep}
+            </div>
+          </div>
+        )}
+
+        {/* Mobile View (Shown on screens < md) */}
+        {isMobileViewport && (
+          <div className="space-y-4">
+            <div className="grid grid-cols-2 gap-4">
+              {/* Steps (half) | Calories (half) */}
+              <div className="col-span-1 min-h-[180px] flex">
+                {stepsCard}
+              </div>
+              <div className="col-span-1 min-h-[180px] flex">
+                {caloriesCard}
+              </div>
+
+              {/* Distance (half) | Heart Rate (half) */}
+              <div className="col-span-1 min-h-[180px] flex">
+                {distanceCard}
+              </div>
+              <div className="col-span-1 min-h-[180px] flex">
+                {heartRateCard}
+              </div>
+
+              {/* Sleep (full width) */}
+              <div className="col-span-2">
+                {sleepCard}
+              </div>
+
+              {/* BMI (half) | Hydration (half) */}
+              <div className="col-span-1 min-h-[180px] flex">
+                {bmiCard}
+              </div>
+              <div className="col-span-1 min-h-[180px] flex">
+                {hydrationCard}
+              </div>
+
+              {/* Health Score (full width) */}
+              <div className="col-span-2">
+                {healthScoreCard}
+              </div>
+            </div>
+
+            {/* Charts (full width) */}
+            <div className="space-y-4 pt-4">
+              {chartHeartRate}
+              {chartSteps}
+              {chartDistance}
+              {chartSleep}
+            </div>
+          </div>
+        )}
+
+        {/* AI Assessment Report */}
+        {(isAssessmentLoading || assessmentResult) && (
+          <div className="mt-8 bg-white dark:bg-slate-800 p-4 md:p-8 rounded-3xl shadow-lg border border-slate-100 dark:border-slate-700 animate-slide-up">
+            <h3 className="text-xl md:text-2xl font-bold flex items-center mb-4 md:mb-6 text-text-main dark:text-white">
+              <div className="w-8 h-8 md:w-10 md:h-10 bg-secondary/10 rounded-xl flex items-center justify-center mr-3">
+                <MessageSquare size={18} className="text-secondary" />
               </div>
               Wellness Analysis
             </h3>
 
             {isAssessmentLoading && (
-              <div className="flex flex-col items-center justify-center py-12">
-                <div className="w-12 h-12 border-4 border-slate-200 border-t-secondary rounded-full animate-spin mb-4" />
-                <p className="text-text-muted animate-pulse">Generating insights...</p>
+              <div className="flex flex-col items-center justify-center py-8 md:py-12">
+                <div className="w-10 h-10 border-4 border-slate-200 border-t-secondary rounded-full animate-spin mb-4" />
+                <p className="text-sm text-text-muted animate-pulse">Generating insights...</p>
               </div>
             )}
 
             {assessmentResult && !isAssessmentLoading && (
               <div className="space-y-6">
-                <div className="prose prose-slate max-w-none"
+                <div className="prose prose-slate max-w-none text-sm leading-relaxed"
                   dangerouslySetInnerHTML={{
                     __html: assessmentResult.text
                       .replace(/^### (.*$)/gim, '<h3 class="text-xl font-bold text-primary mt-6 mb-3">$1</h3>')
@@ -4811,12 +4865,12 @@ Rules:
                 />
 
                 {assessmentResult.sources && assessmentResult.sources.length > 0 && (
-                  <div className="mt-6 pt-6 border-t border-slate-100">
-                    <p className="font-semibold text-sm text-text-muted mb-3 uppercase tracking-wider">Sources</p>
+                  <div className="mt-6 pt-6 border-t border-slate-100 dark:border-slate-700">
+                    <p className="font-semibold text-xs md:text-sm text-text-muted dark:text-slate-400 mb-3 uppercase tracking-wider">Sources</p>
                     <div className="flex flex-wrap gap-2">
                       {assessmentResult.sources.map((source, idx) => (
                         <a key={idx} href={source.uri} target="_blank" rel="noopener noreferrer"
-                          className="flex items-center px-3 py-1.5 bg-slate-50 rounded-lg text-xs text-primary hover:bg-primary/5 hover:underline transition-colors border border-slate-100">
+                          className="flex items-center px-3 py-1.5 bg-slate-50 dark:bg-slate-750 rounded-lg text-xs text-primary hover:bg-primary/5 hover:underline transition-colors border border-slate-100 dark:border-slate-750">
                           <Link size={12} className="mr-1.5" />
                           <span className="max-w-[200px] truncate">{source.title}</span>
                         </a>
@@ -4827,11 +4881,10 @@ Rules:
               </div>
             )}
           </div>
-        )
-      }
-    </div >
-  );
-
+        )}
+      </div>
+    );
+  };
 
   const renderChatbotTab = () => {
     // Read the last clear timestamp from localStorage
@@ -4981,152 +5034,152 @@ Rules:
           className="flex-grow overflow-y-auto space-y-6 pr-2 mb-4 scrollbar-thin scrollbar-thumb-muted scrollbar-track-transparent min-h-0 animate-fade-in"
         >
           {/* Messages */}
-         {visibleMessages.map((msg, index) => {
-  const prevMsg = visibleMessages[index - 1];
-  
-  // Logic for Time Separator (> 5 mins gap)
-  const showTimeSeparator = !prevMsg || 
-    (msg.createdAt && prevMsg.createdAt && msg.createdAt - prevMsg.createdAt > 5 * 60 * 1000);
+          {visibleMessages.map((msg, index) => {
+            const prevMsg = visibleMessages[index - 1];
 
-  // Logic for Grouping (Same sender as previous)
-  const isConsecutive = prevMsg && prevMsg.role === msg.role && !showTimeSeparator;
+            // Logic for Time Separator (> 5 mins gap)
+            const showTimeSeparator = !prevMsg ||
+              (msg.createdAt && prevMsg.createdAt && msg.createdAt - prevMsg.createdAt > 5 * 60 * 1000);
 
-  return (
-    <React.Fragment key={index}>
-      {/* TIME SEPARATOR */}
-      {showTimeSeparator && (
-        <div className="my-6 flex justify-center animate-fade-in">
-          <span className="text-[10px] font-bold tracking-widest uppercase text-slate-400 dark:text-slate-500 bg-slate-100 dark:bg-slate-800/60 px-3 py-1 rounded-full border border-slate-200 dark:border-slate-700">
-             {formatTimeSeparator(msg.createdAt)}
-          </span>
-        </div>
-      )}
+            // Logic for Grouping (Same sender as previous)
+            const isConsecutive = prevMsg && prevMsg.role === msg.role && !showTimeSeparator;
 
-      <div
-        className={`flex animate-slide-up ${msg.role === "user" ? "justify-end" : "justify-start"} ${isConsecutive ? 'mt-1' : 'mt-4'}`}
-      >
-        <div
-          className={`flex max-w-[85%] ${msg.role === "user" ? "flex-row-reverse" : "flex-row"}`}
-        >
-          {/* Avatar: Hidden if consecutive */}
-          <div
-            className={`flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center mt-1 shadow-theme ${msg.role === "user"
-              ? "bg-primary text-white ml-3"
-              : "bg-secondary/10 text-secondary mr-3"
-              } ${isConsecutive ? 'opacity-0' : 'opacity-100'}`}
-          >
-            {!isConsecutive && (msg.role === "user" ? (
-              <Activity size={16} />
-            ) : (
-              <MessageSquare size={16} />
-            ))}
-          </div>
-
-          {/* Bubble */}
-          <div
-            className={`p-4 rounded-2xl shadow-theme-lg text-[15px] leading-relaxed ${msg.role === "user"
-              ? `bg-primary text-white ${isConsecutive ? 'rounded-tr-2xl' : 'rounded-tr-none'}`
-              : `bg-surface dark:bg-slate-800 text-text-main dark:text-slate-100 border border-border ${isConsecutive ? 'rounded-tl-2xl' : 'rounded-tl-none'}`
-              }`}
-          >
-            {/* ... Keep the existing inner logic for parseAssistantResponse and standard rendering exactly as it was ... */}
-            {(() => {
-              const sections = msg.role !== 'user' ? parseAssistantResponse(msg.text) : {};
-              const hasStructuredData = sections.ANSWER || sections["WHAT YOU CAN DO"] || sections["WHEN TO SEE A DOCTOR"];
-
-              if (msg.role !== 'user' && hasStructuredData) {
-                return (
-                  <div className="space-y-4 w-full">
-                    {sections.ANSWER && (
-                      <div className="p-4 bg-slate-50 dark:bg-slate-800 rounded-xl border-l-4 border-primary">
-                        <p className="font-bold text-primary mb-2 flex items-center gap-2">
-                          <Info size={16} /> What this means
-                        </p>
-                        <div className="text-text-main dark:text-slate-200">{sections.ANSWER}</div>
-                      </div>
-                    )}
-                    {sections["WHAT YOU CAN DO"] && (
-                      <div className="p-4 bg-emerald-50 dark:bg-emerald-900/20 rounded-xl border border-emerald-100 dark:border-emerald-900/30">
-                        <p className="font-bold text-emerald-700 dark:text-emerald-400 mb-2 flex items-center gap-2">
-                          <CheckCircle size={16} /> What you can do
-                        </p>
-                        <ul className="list-disc pl-5 space-y-1 text-text-main dark:text-slate-200">
-                          {sections["WHAT YOU CAN DO"].split("\n").map((line, i) => {
-                            const cleanLine = line.replace(/^[-•*]\s*/, "").trim();
-                            return cleanLine ? <li key={i}>{cleanLine}</li> : null;
-                          })}
-                        </ul>
-                      </div>
-                    )}
-                    {sections["WHEN TO SEE A DOCTOR"] && (
-                      <div className="p-4 bg-red-50 dark:bg-red-900/20 rounded-xl border border-red-100 dark:border-red-900/30">
-                        <p className="font-bold text-red-700 dark:text-red-400 mb-2 flex items-center gap-2">
-                          <AlertCircle size={16} /> When to see a doctor
-                        </p>
-                        <ul className="list-disc pl-5 space-y-1 text-text-main dark:text-slate-200">
-                          {sections["WHEN TO SEE A DOCTOR"].split("\n").map((line, i) => {
-                            const cleanLine = line.replace(/^[-•*]\s*/, "").trim();
-                            return cleanLine ? <li key={i}>{cleanLine}</li> : null;
-                          })}
-                        </ul>
-                      </div>
-                    )}
-                    {sections.DISCLAIMER && (
-                       <p className="text-xs text-text-muted italic mt-2 border-t pt-2 border-slate-100 dark:border-slate-700">
-                         {sections.DISCLAIMER}
-                       </p>
-                    )}
-                    {Array.isArray(msg.sources) && msg.sources.length > 0 && (
-                      <div className="mt-4 pt-3 border-t border-slate-200 dark:border-slate-700/40">
-                        <p className="text-xs font-semibold text-text-muted dark:text-slate-400 mb-2 flex items-center gap-2">
-                          <Link size={14} />
-                          Sources
-                        </p>
-                        <div className="flex flex-wrap gap-2">
-                          {msg.sources.map((src, i) => (
-                            <a
-                              key={i}
-                              href={src}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="inline-flex items-center gap-1 px-3 py-1.5 rounded-full bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-600 text-xs text-primary transition shadow-sm"
-                            >
-                              Source {i + 1}
-                              <ExternalLink size={12} />
-                            </a>
-                          ))}
-                        </div>
-                      </div>
-                    )}
+            return (
+              <React.Fragment key={index}>
+                {/* TIME SEPARATOR */}
+                {showTimeSeparator && (
+                  <div className="my-6 flex justify-center animate-fade-in">
+                    <span className="text-[10px] font-bold tracking-widest uppercase text-slate-400 dark:text-slate-500 bg-slate-100 dark:bg-slate-800/60 px-3 py-1 rounded-full border border-slate-200 dark:border-slate-700">
+                      {formatTimeSeparator(msg.createdAt)}
+                    </span>
                   </div>
-                );
-              } else {
-                return (
+                )}
+
+                <div
+                  className={`flex animate-slide-up ${msg.role === "user" ? "justify-end" : "justify-start"} ${isConsecutive ? 'mt-1' : 'mt-4'}`}
+                >
                   <div
-                    className="whitespace-pre-wrap prose prose-sm dark:prose-invert max-w-none"
-                    dangerouslySetInnerHTML={{
-                      __html: (() => {
-                        let html = msg.text || "";
-                        html = html.replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>");
-                        html = html.replace(/(?<!\*)\*(?!\*)(.+?)(?<!\*)\*(?!\*)/g, "<em>$1</em>");
-                        let listCounter = 0;
-                        html = html.replace(/^[\s]*[-•*]\s+(.*)$/gm, (match, content) => {
-                          listCounter++;
-                          return `<span class="font-semibold text-primary">${listCounter}.</span> ${content}`;
-                        });
-                        return html;
-                      })(),
-                    }}
-                  />
-                );
-              }
-            })()}
-          </div>
-        </div>
-      </div>
-    </React.Fragment>
-  );
-})}
+                    className={`flex max-w-[85%] ${msg.role === "user" ? "flex-row-reverse" : "flex-row"}`}
+                  >
+                    {/* Avatar: Hidden if consecutive */}
+                    <div
+                      className={`flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center mt-1 shadow-theme ${msg.role === "user"
+                        ? "bg-primary text-white ml-3"
+                        : "bg-secondary/10 text-secondary mr-3"
+                        } ${isConsecutive ? 'opacity-0' : 'opacity-100'}`}
+                    >
+                      {!isConsecutive && (msg.role === "user" ? (
+                        <Activity size={16} />
+                      ) : (
+                        <MessageSquare size={16} />
+                      ))}
+                    </div>
+
+                    {/* Bubble */}
+                    <div
+                      className={`p-4 rounded-2xl shadow-theme-lg text-[15px] leading-relaxed ${msg.role === "user"
+                        ? `bg-primary text-white ${isConsecutive ? 'rounded-tr-2xl' : 'rounded-tr-none'}`
+                        : `bg-surface dark:bg-slate-800 text-text-main dark:text-slate-100 border border-border ${isConsecutive ? 'rounded-tl-2xl' : 'rounded-tl-none'}`
+                        }`}
+                    >
+                      {/* ... Keep the existing inner logic for parseAssistantResponse and standard rendering exactly as it was ... */}
+                      {(() => {
+                        const sections = msg.role !== 'user' ? parseAssistantResponse(msg.text) : {};
+                        const hasStructuredData = sections.ANSWER || sections["WHAT YOU CAN DO"] || sections["WHEN TO SEE A DOCTOR"];
+
+                        if (msg.role !== 'user' && hasStructuredData) {
+                          return (
+                            <div className="space-y-4 w-full">
+                              {sections.ANSWER && (
+                                <div className="p-4 bg-slate-50 dark:bg-slate-800 rounded-xl border-l-4 border-primary">
+                                  <p className="font-bold text-primary mb-2 flex items-center gap-2">
+                                    <Info size={16} /> What this means
+                                  </p>
+                                  <div className="text-text-main dark:text-slate-200">{sections.ANSWER}</div>
+                                </div>
+                              )}
+                              {sections["WHAT YOU CAN DO"] && (
+                                <div className="p-4 bg-emerald-50 dark:bg-emerald-900/20 rounded-xl border border-emerald-100 dark:border-emerald-900/30">
+                                  <p className="font-bold text-emerald-700 dark:text-emerald-400 mb-2 flex items-center gap-2">
+                                    <CheckCircle size={16} /> What you can do
+                                  </p>
+                                  <ul className="list-disc pl-5 space-y-1 text-text-main dark:text-slate-200">
+                                    {sections["WHAT YOU CAN DO"].split("\n").map((line, i) => {
+                                      const cleanLine = line.replace(/^[-•*]\s*/, "").trim();
+                                      return cleanLine ? <li key={i}>{cleanLine}</li> : null;
+                                    })}
+                                  </ul>
+                                </div>
+                              )}
+                              {sections["WHEN TO SEE A DOCTOR"] && (
+                                <div className="p-4 bg-red-50 dark:bg-red-900/20 rounded-xl border border-red-100 dark:border-red-900/30">
+                                  <p className="font-bold text-red-700 dark:text-red-400 mb-2 flex items-center gap-2">
+                                    <AlertCircle size={16} /> When to see a doctor
+                                  </p>
+                                  <ul className="list-disc pl-5 space-y-1 text-text-main dark:text-slate-200">
+                                    {sections["WHEN TO SEE A DOCTOR"].split("\n").map((line, i) => {
+                                      const cleanLine = line.replace(/^[-•*]\s*/, "").trim();
+                                      return cleanLine ? <li key={i}>{cleanLine}</li> : null;
+                                    })}
+                                  </ul>
+                                </div>
+                              )}
+                              {sections.DISCLAIMER && (
+                                <p className="text-xs text-text-muted italic mt-2 border-t pt-2 border-slate-100 dark:border-slate-700">
+                                  {sections.DISCLAIMER}
+                                </p>
+                              )}
+                              {Array.isArray(msg.sources) && msg.sources.length > 0 && (
+                                <div className="mt-4 pt-3 border-t border-slate-200 dark:border-slate-700/40">
+                                  <p className="text-xs font-semibold text-text-muted dark:text-slate-400 mb-2 flex items-center gap-2">
+                                    <Link size={14} />
+                                    Sources
+                                  </p>
+                                  <div className="flex flex-wrap gap-2">
+                                    {msg.sources.map((src, i) => (
+                                      <a
+                                        key={i}
+                                        href={src}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="inline-flex items-center gap-1 px-3 py-1.5 rounded-full bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-600 text-xs text-primary transition shadow-sm"
+                                      >
+                                        Source {i + 1}
+                                        <ExternalLink size={12} />
+                                      </a>
+                                    ))}
+                                  </div>
+                                </div>
+                              )}
+                            </div>
+                          );
+                        } else {
+                          return (
+                            <div
+                              className="whitespace-pre-wrap prose prose-sm dark:prose-invert max-w-none overflow-x-auto"
+                              dangerouslySetInnerHTML={{
+                                __html: (() => {
+                                  let html = msg.text || "";
+                                  html = html.replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>");
+                                  html = html.replace(/(?<!\*)\*(?!\*)(.+?)(?<!\*)\*(?!\*)/g, "<em>$1</em>");
+                                  let listCounter = 0;
+                                  html = html.replace(/^[\s]*[-•*]\s+(.*)$/gm, (match, content) => {
+                                    listCounter++;
+                                    return `<span class="font-semibold text-primary">${listCounter}.</span> ${content}`;
+                                  });
+                                  return html;
+                                })(),
+                              }}
+                            />
+                          );
+                        }
+                      })()}
+                    </div>
+                  </div>
+                </div>
+              </React.Fragment>
+            );
+          })}
 
 
           {isChatLoading && <ThinkingBubble stage={thinkingStage} />}
@@ -5966,7 +6019,7 @@ Rules:
 
     return (
       <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-fade-in" onClick={() => setActiveInfoMetric(null)}>
-        <div className="bg-white dark:bg-slate-800 p-6 rounded-3xl shadow-2xl max-w-sm w-full border border-slate-100 dark:border-slate-700 transform transition-all scale-100 relative" onClick={e => e.stopPropagation()}>
+        <div className="bg-white dark:bg-slate-800 p-6 rounded-3xl shadow-2xl max-w-sm w-full border border-slate-100 dark:border-slate-700 transform transition-all scale-100 relative max-h-[90vh] overflow-y-auto" onClick={e => e.stopPropagation()}>
           <button onClick={() => setActiveInfoMetric(null)} className="absolute top-4 right-4 p-2 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-full transition-colors text-text-muted">
             <X size={20} />
           </button>
@@ -5976,9 +6029,9 @@ Rules:
             </div>
             <h3 className="text-xl font-bold text-text-main dark:text-white">{info.title}</h3>
           </div>
-        <div className="text-text-muted dark:text-slate-300 leading-relaxed text-sm">
-  {info.desc}
-</div>
+          <div className="text-text-muted dark:text-slate-300 leading-relaxed text-sm">
+            {info.desc}
+          </div>
           <button
             onClick={() => setActiveInfoMetric(null)}
             className="mt-6 w-full py-3 bg-primary text-white rounded-xl font-semibold shadow-lg shadow-primary/20 hover:bg-primary-dark transition-all"
@@ -5993,24 +6046,99 @@ Rules:
 
   // =========================================================
 
-  /** ---------------------------------------
+  /** --------------------------------------
    * Render (unchanged)
    * -------------------------------------- */
   if (!googleAccessToken) return <LoginPage
     handleLogin={handleLogin}
     error={error}
     setActiveInfoMetric={setActiveInfoMetric}
-/>;
+  />;
 
   return (
-    <div className="min-h-screen p-4 sm:p-8 bg-background dark:bg-slate-950 text-text-main dark:text-slate-100 font-sans">
+    <div className="min-h-screen p-4 sm:p-8 bg-background dark:bg-slate-950 text-text-main dark:text-slate-100 font-sans pb-24 lg:pb-8">
       <ColorBlindFilters />
+
+      {/* Slide-in Mobile Drawer */}
+      <div className={`fixed inset-0 z-[100] transition-all duration-300 lg:hidden ${isMobileMenuOpen ? 'visible pointer-events-auto' : 'invisible pointer-events-none'}`}>
+        {/* Backdrop */}
+        <div
+          className={`absolute inset-0 bg-slate-900/60 backdrop-blur-sm transition-opacity duration-300 ${isMobileMenuOpen ? 'opacity-100' : 'opacity-0'}`}
+          onClick={() => setIsMobileMenuOpen(false)}
+        />
+
+        {/* Drawer Container */}
+        <div
+          className={`absolute top-0 left-0 bottom-0 w-80 max-w-[85vw] bg-white dark:bg-slate-900 shadow-2xl transition-transform duration-300 ease-out transform ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full'
+            } flex flex-col h-full overflow-hidden`}
+        >
+          {/* Drawer Header */}
+          <div className="flex items-center justify-between p-4 border-b border-slate-100 dark:border-slate-800">
+            <span className="font-bold text-text-main dark:text-white">Profile & Settings</span>
+            <button
+              onClick={() => setIsMobileMenuOpen(false)}
+              className="p-2 rounded-xl text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800"
+            >
+              <X size={20} />
+            </button>
+          </div>
+
+          {/* Drawer Scrollable Content */}
+          <div className="flex-grow overflow-y-auto p-4 pb-12">
+            <ProfileSection
+              db={db}
+              userId={userId}
+              appId={appId}
+              theme={theme}
+              setTheme={setTheme}
+              colorBlindMode={colorBlindMode}
+              setColorBlindMode={setColorBlindMode}
+              onCaregiverChange={handleCaregiverChange}
+              onBmiChange={setBmi}
+            />
+          </div>
+        </div>
+      </div>
+
       <div className="max-w-7xl mx-auto">
         {/* Header */}
 
+        {/* Mobile Top Bar */}
+        <div className="lg:hidden sticky top-0 z-50 mb-4 -mx-4 px-4 py-3 bg-white/80 dark:bg-slate-950/80 backdrop-blur-xl border-b border-slate-200/50 dark:border-slate-800/50 flex items-center justify-between transition-all duration-300 shadow-sm">
+          {/* Left: Hamburger menu */}
+          <button
+            onClick={() => setIsMobileMenuOpen(true)}
+            className="p-2 -ml-2 rounded-xl text-slate-600 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+          </button>
+
+          {/* Center: Title / Logo */}
+          <div className="flex items-center gap-2">
+            <div className="relative w-8 h-8 flex-shrink-0">
+              <div className="relative w-full h-full bg-white dark:bg-slate-900 rounded-xl border border-slate-100 dark:border-slate-700 shadow-sm flex items-center justify-center overflow-hidden p-0.5">
+                <img src={appIcon} alt="VytalCare Logo" className="w-full h-full object-contain scale-125" />
+              </div>
+            </div>
+            <span className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary via-teal-500 to-secondary tracking-tight pb-0.5">
+              VytalCare
+            </span>
+          </div>
+
+          {/* Right: Emergency button */}
+          <button
+            onClick={() => setActiveTab('emergency')}
+            className="px-3 py-1.5 bg-red-500 hover:bg-red-600 text-white font-bold rounded-lg text-xs tracking-wide shadow-sm hover:scale-105 active:scale-95 transition-all"
+          >
+            SOS
+          </button>
+        </div>
+
         {/* ✨ BEAUTIFUL GRADIENT HEADER START */}
 
-        <div className="sticky top-0 z-50 mb-0 -mx-4 sm:-mx-8 px-4 sm:px-8 py-4 bg-white/80 dark:bg-slate-950/80 backdrop-blur-xl border-b border-slate-200/50 dark:border-slate-800/50 flex flex-col md:flex-row justify-between items-center transition-all duration-300 shadow-sm">
+        <div className="hidden lg:flex sticky top-0 z-50 mb-0 -mx-4 sm:-mx-8 px-4 sm:px-8 py-4 bg-white/80 dark:bg-slate-950/80 backdrop-blur-xl border-b border-slate-200/50 dark:border-slate-800/50 flex-row justify-between items-center transition-all duration-300 shadow-sm">
 
           {/* Left: Logo & Gradient Title */}
           <div className="flex items-center mb-4 md:mb-0 group cursor-default">
@@ -6031,22 +6159,22 @@ Rules:
             </div>
 
             <div className="flex flex-col justify-center h-14">
-            <div className="flex items-center gap-2">
-              <h1 className="text-3xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-primary via-teal-500 to-secondary tracking-tight leading-none pb-1">
-                VytalCare
-              </h1>
+              <div className="flex items-center gap-2">
+                <h1 className="text-3xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-primary via-teal-500 to-secondary tracking-tight leading-none pb-1">
+                  VytalCare
+                </h1>
 
-              <button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setActiveInfoMetric('about');
-              }}
-              className="w-5 h-5 flex items-center justify-center rounded-full border border-slate-300 dark:border-slate-600 text-slate-400 hover:text-primary hover:border-primary hover:bg-primary/5 transition-all mt-0.5"
-              title="About VytalCare"
-              >
-           <Info size={12} strokeWidth={2.5} />
-         </button>
-      </div>
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setActiveInfoMetric('about');
+                  }}
+                  className="w-5 h-5 flex items-center justify-center rounded-full border border-slate-300 dark:border-slate-600 text-slate-400 hover:text-primary hover:border-primary hover:bg-primary/5 transition-all mt-0.5"
+                  title="About VytalCare"
+                >
+                  <Info size={12} strokeWidth={2.5} />
+                </button>
+              </div>
 
               <span className="text-[10px] font-bold tracking-widest text-text-muted uppercase opacity-70 ml-0.5 leading-none">
                 AI Health Companion
@@ -6089,13 +6217,13 @@ Rules:
         {/* ✨ BEAUTIFUL GRADIENT HEADER END */}
 
         {/* ✅ FIXED PULSE LINE (more visible) */}
-        <div className="w-full h-[3px] bg-slate-300 dark:bg-slate-600 header-line-pulse mb-6 relative z-40" />
+        <div className="hidden lg:block w-full h-[3px] bg-slate-300 dark:bg-slate-600 header-line-pulse mb-6 relative z-40" />
 
         {renderError()}
 
         <div className={`flex flex-col lg:flex-row gap-6 ${activeTab === 'chatbot' ? 'items-stretch' : 'items-start'}`}>
           {/* Left Sidebar - Profile */}
-          <div className="w-full lg:w-80 flex-shrink-0 h-auto">
+          <div className="hidden lg:block w-80 flex-shrink-0 h-auto">
             <ProfileSection
               db={db}
               userId={userId}
@@ -6109,8 +6237,10 @@ Rules:
             />
           </div>
 
-          {/* Main Content */}
-          <div className={`flex-grow bg-surface dark:bg-slate-900 rounded-3xl shadow-xl shadow-slate-200/50 dark:shadow-none border border-slate-100 dark:border-slate-800 overflow-hidden h-[100vh]${activeTab !== 'chatbot' ? 'min-h-[80vh] h' : ''}`}>
+          <div className={`flex-grow bg-surface dark:bg-slate-900 rounded-3xl shadow-xl shadow-slate-200/50 dark:shadow-none border border-slate-100 dark:border-slate-800 overflow-x-hidden ${activeTab === 'chatbot'
+            ? 'h-[calc(100vh-76px)] lg:h-[100vh] overflow-y-auto'
+            : 'min-h-[80vh] h-auto'
+            }`}>
             {activeTab === 'reminders' && renderRemindersTab()}
             {activeTab === 'health_plan' && renderHealthPlanTab()}
             {activeTab === 'activity' && renderActivityTab()}
@@ -6162,6 +6292,31 @@ Rules:
           </div>
         )}
         {renderInfoModal()}
+      </div>
+
+      {/* Mobile Bottom Navigation */}
+      <div className="lg:hidden fixed bottom-0 left-0 right-0 z-50 bg-white/95 dark:bg-slate-950/95 border-t border-slate-200/50 dark:border-slate-800/50 backdrop-blur-xl shadow-[0_-4px_12px_rgba(0,0,0,0.03)] px-4 py-2 flex justify-around items-center">
+        {[
+          { id: 'reminders', icon: Bell, label: 'Reminders' },
+          { id: 'health_plan', icon: Calendar, label: 'Plan' },
+          { id: 'activity', icon: Activity, label: 'Activity' },
+          { id: 'chatbot', icon: MessageSquare, label: 'Chat' }
+        ].map(tab => (
+          <button
+            key={tab.id}
+            onClick={() => {
+              setActiveTab(tab.id);
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            }}
+            className={`flex flex-col items-center gap-1 px-3 py-1 rounded-xl transition-all duration-200 ${activeTab === tab.id
+              ? 'text-primary dark:text-teal-400 font-bold scale-105'
+              : 'text-slate-500 dark:text-slate-400 hover:text-slate-700'
+              }`}
+          >
+            <tab.icon size={20} className={activeTab === tab.id ? 'fill-current' : ''} />
+            <span className="text-[10px] tracking-wide">{tab.label}</span>
+          </button>
+        ))}
       </div>
     </div>
   );
