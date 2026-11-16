@@ -24,7 +24,7 @@ if not PINECONE_API_KEY or not GROQ_API_KEY:
 
 PINECONE_INDEX_NAME = "medlineplus-index"
 EMBEDDING_MODEL_NAME = "all-MiniLM-L6-v2"
-GROQ_MODEL_NAME = "llama-3.3-70b-versatile"
+GROQ_MODEL_NAME = "openai/gpt-oss-20b"
 
 TOP_K = 5
 MIN_SIMILARITY_SCORE = 0.35
