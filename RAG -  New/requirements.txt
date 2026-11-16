@@ -3,6 +3,6 @@ flask-cors
 gunicorn
 python-dotenv
 pinecone
-groq
+google-generativeai
 lxml
 langchain-text-splitters

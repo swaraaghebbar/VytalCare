@@ -5,8 +5,7 @@ import time
 from dotenv import load_dotenv
 from pinecone import Pinecone
 from sentence_transformers import SentenceTransformer
-from groq import Groq
-
+import google.generativeai as genai
 
 # ==========================================
 # 1. CONFIGURATION
@@ -15,23 +14,21 @@ from groq import Groq
 load_dotenv()
 
 PINECONE_API_KEY = os.getenv("PINECONE_API_KEY")
-GROQ_API_KEY = os.getenv("GROQ_API_KEY")
+GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
 
-if not PINECONE_API_KEY or not GROQ_API_KEY:
-    print("❌ Error: Missing PINECONE_API_KEY or GROQ_API_KEY in .env file.")
+if not PINECONE_API_KEY or not GEMINI_API_KEY:
+    print("❌ Error: Missing PINECONE_API_KEY or GEMINI_API_KEY in .env file.")
     sys.exit(1)
-
 
 PINECONE_INDEX_NAME = "medlineplus-index"
 EMBEDDING_MODEL_NAME = "all-MiniLM-L6-v2"
-GROQ_MODEL_NAME = "openai/gpt-oss-20b"
+GEMINI_MODEL_NAME = "gemini-2.5-flash"
 
 TOP_K = 5
 MIN_SIMILARITY_SCORE = 0.35
 
 MAX_RETRIES = 3
 RETRY_DELAY = 10
-
 
 # ==========================================
 # 2. INITIALIZATION
@@ -47,9 +44,8 @@ try:
         EMBEDDING_MODEL_NAME
     )
 
-    groq_client = Groq(
-        api_key=GROQ_API_KEY
-    )
+    genai.configure(api_key=GEMINI_API_KEY)
+    gemini_client = genai.GenerativeModel(GEMINI_MODEL_NAME)
 
 except Exception as e:
     print(f"❌ Initialization failed: {e}")
@@ -57,13 +53,11 @@ except Exception as e:
 
 print("✅ VytalCare is ready.")
 
-
 # ==========================================
 # 3. SESSION REQUEST COUNTER
 # ==========================================
 
 request_count = 0
-
 
 # ==========================================
 # 4. RETRIEVE RELEVANT CONTEXT
@@ -72,14 +66,10 @@ request_count = 0
 def retrieve_facts(query, top_k=TOP_K):
     """
     Converts the user's question into an embedding
-    and retrieves relevant medical information
-    from Pinecone.
+    and retrieves relevant medical information from Pinecone.
     """
-
     try:
-        query_vector = embedding_model.encode(
-            query
-        ).tolist()
+        query_vector = embedding_model.encode(query).tolist()
 
         result = index.query(
             vector=query_vector,
@@ -91,14 +81,12 @@ def retrieve_facts(query, top_k=TOP_K):
 
         for match in result.get("matches", []):
             metadata = match.get("metadata", {})
-
             text = (
                 metadata.get("text")
                 or metadata.get("content")
                 or metadata.get("chunk")
                 or ""
             )
-
             score = match.get("score", 0)
 
             if text and score >= MIN_SIMILARITY_SCORE:
@@ -107,237 +95,155 @@ def retrieve_facts(query, top_k=TOP_K):
         return retrieved_facts
 
     except Exception as e:
-        print(f"⚠️ Knowledge retrieval error: {e}")
+        print(f"❌ Pinecone query failed: {e}")
         return []
 
-
 # ==========================================
-# 5. BUILD RAG CONTEXT
+# 5. BUILD CONTEXT STRING
 # ==========================================
 
 def build_context(facts):
-    """
-    Formats retrieved medical information
-    for the LLM.
-    """
-
+    """Combines retrieved facts into a single structured string."""
     if not facts:
         return None
 
     context_parts = []
-
     for i, fact in enumerate(facts, start=1):
-        context_parts.append(
-            f"[Source {i}]\n{fact}"
-        )
+        context_parts.append(f"[Source {i}]\n{fact}")
 
     return "\n\n".join(context_parts)
 
-
 # ==========================================
-# 6. QUERY GROQ
+# 6. QUERY GEMINI LLM
 # ==========================================
 
-def query_groq_llm(user_question, context):
-    """
-    Sends the retrieved medical context and
-    user question to Groq.
-
-    Automatically retries after 10 seconds
-    if a rate-limit error occurs.
-    """
-
+def query_gemini(user_question, context):
+    """Sends the context and question to Gemini 2.5 Flash."""
     global request_count
 
-    system_prompt = """
-    You are VytalCare, a helpful, accurate, and professional medical information assistant.
+    system_prompt = """You are VytalCare, a professional, accurate, and compassionate medical information assistant.
 
-    Answer the user's question using ONLY the information provided in the retrieved medical context.
+Your role is to answer the user's question using ONLY the information provided in the retrieved medical context.
 
-    RULES:
+STRICT RULES:
+1. Use ONLY the retrieved medical context to answer the user's question. Do NOT use your own pretrained knowledge or invent facts.
+2. If the context does not contain enough information to answer, respond exactly:
+   "I could not find enough information in the medical knowledge base to answer this question."
+   Do NOT generate any headings, bullet points, or empty sections if you do not have enough information.
+3. Do NOT mention retrieved documents, sources, references, Pinecone, RAG, similarity scores, or implementation details. Present every response as if VytalCare is naturally generating the answer.
+4. Do NOT claim to diagnose medical conditions or replace professional medical advice.
+5. If only part of the question can be answered, answer only that portion and state that the remaining information was not available.
 
-    1. Use only the retrieved medical context to answer the question.
-    2. Do not add medical facts from your own pretrained knowledge.
-    3. Do not invent or assume information.
-    4. If the context does not contain enough information to answer the question, say:
-    "I could not find enough information in the medical knowledge base to answer this question."
-    5. If only part of the question can be answered, answer that part and clearly state that the remaining information was not available.
-    6. Do not mention Pinecone, embeddings, vector databases, RAG, similarity scores, or implementation details.
-    7. Do not claim to provide a medical diagnosis.
-    8. Keep the response clear, professional, helpful, and easy to understand.
-    """
+RESPONSE FORMATTING (MANDATORY):
+If and ONLY if you have sufficient medical context, organize your response using this exact structure:
 
-    user_prompt = f"""
+**Overview**
+Provide a concise, 1-2 sentence explanation of the topic based on the context.
+
+**Key Information**
+Here is the key clinical information regarding this topic:
+- Provide at least 6 distinct, detailed bullet points (use hyphens "-", NEVER use numbers here) about uses, precautions, or key facts mentioned in the context.
+
+**How to Use**
+Follow these steps for proper administration and usage:
+1. First step.
+2. Second step.
+3. Third step.
+*(Use standard numbers "1.", "2.", "3." ONLY under this heading).*
+
+**Possible Side Effects**
+Be aware of the following potential side effects mentioned in the context:
+- Bullet list of side effects (use hyphens "-", NEVER use numbers here).
+
+**Warnings**
+Please note the following important warnings and precautions:
+- Warning bullet point (use hyphens "-", NEVER use numbers here).
+- Another warning bullet point (use hyphens "-", NEVER use numbers here).
+
+*Note: Only include a section if the context contains information for it.*"""
+
+    full_prompt = f"""{system_prompt}
+
 RETRIEVED MEDICAL CONTEXT:
-
 {context}
 
-
 USER QUESTION:
-
 {user_question}
 
-
-Answer the user's question using only the retrieved medical context.
-"""
+Answer the user's question using only the retrieved medical context."""
 
     for attempt in range(MAX_RETRIES + 1):
-
         try:
             request_count += 1
-
-            response = groq_client.chat.completions.create(
-                model=GROQ_MODEL_NAME,
-
-                messages=[
-                    {
-                        "role": "system",
-                        "content": system_prompt
-                    },
-                    {
-                        "role": "user",
-                        "content": user_prompt
-                    }
-                ],
-
-                temperature=0.1,
-                max_tokens=700
+            response = gemini_client.generate_content(
+                full_prompt,
+                generation_config=genai.GenerationConfig(
+                    temperature=0.1,
+                    max_output_tokens=700
+                )
             )
-
-            return (
-                response
-                .choices[0]
-                .message
-                .content
-                .strip()
-            )
+            return response.text.strip()
 
         except Exception as e:
-            error_message = str(e)
-
-            is_rate_limit_error = (
-                "429" in error_message
-                or "rate_limit" in error_message.lower()
-                or "rate limit" in error_message.lower()
-            )
-
-            if is_rate_limit_error:
-
+            err = str(e).lower()
+            if "429" in err or "quota" in err or "rate" in err:
                 if attempt >= MAX_RETRIES:
                     return (
-                        "⚠️ The service is currently experiencing "
+                        "The service is currently experiencing "
                         "high demand. Please wait and try again later."
                     )
-
-                print()
-                print("⚠️ Rate limit hit... Please wait.")
-                print(
-                    f"Automatically retrying in "
-                    f"{RETRY_DELAY} seconds..."
-                )
-
+                print(f"⚠️ Rate limit hit. Retrying in {RETRY_DELAY} seconds...")
                 time.sleep(RETRY_DELAY)
-
                 continue
 
             return f"❌ Error communicating with the AI service: {e}"
 
     return "❌ Unable to generate a response."
 
-
 # ==========================================
-# 7. GENERATE RAG RESPONSE
-# ==========================================
-
-def generate_response(user_question):
-    """
-    Complete RAG pipeline:
-
-    User question
-        ↓
-    Query embedding
-        ↓
-    Pinecone retrieval
-        ↓
-    Context building
-        ↓
-    Groq generation
-        ↓
-    Final answer
-    """
-
-    facts = retrieve_facts(
-        user_question,
-        top_k=TOP_K
-    )
-
-    # If no relevant information was retrieved,
-    # do not call the LLM.
-    if not facts:
-        return (
-            "I could not find enough information in the "
-            "medical knowledge base to answer this question."
-        )
-
-    context = build_context(facts)
-
-    return query_groq_llm(
-        user_question=user_question,
-        context=context
-    )
-
-
-# ==========================================
-# 8. TERMINAL CHAT LOOP
+# 7. MAIN INTERACTIVE LOOP
 # ==========================================
 
-def main():
-
-    print()
-    print("🩺 VytalCare Medical RAG Chatbot is Active!")
-    print("Type 'quit' or 'exit' to stop.")
-    print("=" * 60)
-    print()
+def run_chatbot():
+    print("=" * 50)
+    print("🏥 Welcome to VytalCare Medical Assistant")
+    print("=" * 50)
+    print("Ask any medical question. Type 'exit' or 'quit' to end.\n")
 
     while True:
-
         try:
-            user_input = input("You: ").strip()
+            user_question = input("User: ").strip()
 
-        except (KeyboardInterrupt, EOFError):
-            print("\nExiting chatbot. Goodbye! 👋")
+            if not user_question:
+                continue
+
+            if user_question.lower() in ["exit", "quit"]:
+                print("\n👋 Stay healthy! Goodbye.")
+                break
+
+            print("\n🔍 Searching medical knowledge base...")
+            facts = retrieve_facts(user_question)
+
+            if not facts:
+                print(
+                    "\nVytalCare: I could not find enough information "
+                    "in the medical knowledge base to answer this question.\n"
+                )
+                continue
+
+            print("🧠 Generating response with Gemini 2.5 Flash...")
+            context = build_context(facts)
+            answer = query_gemini(user_question, context)
+
+            print(f"\nVytalCare:\n{answer}\n")
+            print("-" * 50)
+
+        except KeyboardInterrupt:
+            print("\n\n👋 Session ended. Goodbye.")
             break
+        except Exception as e:
+            print(f"\n❌ Unexpected error: {e}\n")
 
-        if not user_input:
-            continue
-
-        if user_input.lower() in ["quit", "exit"]:
-            print("\nExiting chatbot. Goodbye! 👋")
-            break
-
-        print()
-        print("VytalCare is thinking...")
-
-        reply = generate_response(user_input)
-
-        print()
-        print("🩺 VytalCare:")
-        print(reply)
-
-        print()
-        print(
-            f"📊 Requests this session: "
-            f"{request_count}"
-        )
-
-        print()
-        print("=" * 60)
-        print()
-
-
-# ==========================================
-# 9. START APPLICATION
-# ==========================================
 
 if __name__ == "__main__":
-    main()
+    run_chatbot()
