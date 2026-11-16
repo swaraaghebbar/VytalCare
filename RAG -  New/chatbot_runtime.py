@@ -22,7 +22,7 @@ if not PINECONE_API_KEY or not GEMINI_API_KEY:
 
 PINECONE_INDEX_NAME = "medlineplus-index"
 EMBEDDING_MODEL_NAME = "all-MiniLM-L6-v2"
-GEMINI_MODEL_NAME = "gemini-2.5-flash"
+GEMINI_MODEL_NAME = "gemini-3.5-flash-lite"
 
 TOP_K = 5
 MIN_SIMILARITY_SCORE = 0.35
@@ -179,7 +179,7 @@ Answer the user's question using only the retrieved medical context."""
                 full_prompt,
                 generation_config=genai.GenerationConfig(
                     temperature=0.1,
-                    max_output_tokens=700
+                    max_output_tokens=2048
                 )
             )
             return response.text.strip()
